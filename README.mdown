@@ -1,0 +1,53 @@
+# FS (FileSystem)
+
+Work with your filesystem!
+
+## Problem
+
+This Gem shouldn't reinvent the wheel or be a replacement.
+But in Ruby working with the filesystem really hurts!
+
+In your toolbox are at least `File`, `Dir`, `FileUtils`, `Find`, and maybe some more.
+Good tools, but to complicated for most cases. 
+It's not about piping, or copying the shell as it is.
+But think about a simple `ls` in the shell, than how you would do this in Ruby. 
+Got the idea?
+
+## Solution
+
+`FS` gathers the cluttered methods in a single place. Internally using the
+good old standard library, but providing simple methods
+
+## Examples
+
+    FS.changedir('~/Projects/fs')
+    ==> "/Users/bjuenger/Projects/fs"
+    FS.list('.')
+    ==> [".git", ".gitignore", ".rvmrc", "fs.gemspec", "Gemfile", "Gemfile.lock", "lib", "Rakefile", "README.mdown", "spec"]
+    FS.makedirs('tmp/demo')
+    FS.touch('tmp/demo/newfile.txt')
+    FS.list('tmp/demo')
+    ==> ["newfile.txt"]
+    FS.remove('tmp/demo/newfile.txt')
+    FS.list('tmp/demo')
+    ==> []
+
+## Aliases
+
+Although verbose method names are good, there are some aliases for unix shell 
+commands (unsorted).
+
+- ls => list
+- mkdir => makedir
+- mkdir_p => makedirs
+- cd => changedir
+- mv => move
+- cp => copy
+- rm => remove
+- ln => link
+- cat => read (no concatenate)
+
+## BTW
+
+If you need a replacement for the shell in pure ruby, than have a look at 
+[Rush](http://rush.heroku.com/).
