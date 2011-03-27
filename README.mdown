@@ -47,6 +47,11 @@ commands (unsorted).
 - ln => link
 - cat => read (no concatenate)
 
+## Todo
+
+- Aliases
+- list(dir, '*.rb')
+
 ## BTW
 
 If you need a replacement for the shell in pure ruby, than have a look at 

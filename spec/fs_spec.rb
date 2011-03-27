@@ -46,12 +46,61 @@ describe FS do
     it 'lists all files and dirs (without . and ..)' do
       FS.touch('/foo')
       FS.makedir('/bar')
-      FS.makedirs('/baz/lala')
-      FS.list('/').should eql(['foo', 'bar', 'baz'])
-      FS.list('/baz').should eql(['lala'])
+      FS.list('/').should eql(['foo', 'bar'])
     end
     
-    it 'glob files for a pattern'
+    it 'globs files and dirs' do
+      FS.touch('/file.txt')
+      FS.touch('/file.rb')
+      FS.makedir('/dir.txt')
+      FS.makedir('/dir.rb')
+      FS.list('/', '*.txt').should eql(['file.txt', 'dir.txt'])
+    end
+    
+    it 'lists files and dirs in a subdir' do
+      FS.makedir('/foo')
+      FS.makedir('/foo/dir')
+      FS.touch('/foo/file')
+      FS.list('/foo').should eql(['dir', 'file'])
+    end
+    
+    it 'globs files and dirs in a subdir' do
+      FS.makedir('/foo')
+      FS.touch('/foo/file.txt')
+      FS.touch('/foo/file.rb')
+      FS.makedir('/foo/dir.txt')
+      FS.makedir('/foo/dir.rb')
+      FS.list('/foo', '*.txt').should eql(['dir.txt', 'file.txt'])
+    end
+  end
+  
+  describe 'find' do
+    it 'returns an empty list if there are no files' do
+      FS.list('/').should be_empty
+    end
+    
+    it 'finds files in all subdirs' do
+      FS.makedirs('/one/two/three')
+      FS.touch('/one/file.one')
+      FS.touch('/one/two/three/file.three')
+      FS.find('/').should eql([
+        'one',
+        'one/file.one',
+        'one/two',
+        'one/two/three',
+        'one/two/three/file.three'
+      ])
+    end
+    
+    it 'globs files in all subdirs' do
+      FS.makedirs('/one/two/three')
+      FS.touch('/one/file.one')
+      FS.touch('/one/two/three/file.three')
+      FS.find('/', 'file.*').should eql([
+        'one/file.one',
+        'one/two/three/file.three'
+      ])
+    end
   end
   
   describe 'move' do
@@ -75,9 +124,7 @@ describe FS do
     #   FS.touch('/file')
     #   FS.makedir('/dir')
     #   FS.makedir('/tmp')
-    #   
     #   FS.move('/file', '/dir', '/tmp')
-    #   
     #   FS.list('/').should eql(['tmp'])
     #   FS.list('/tmp').should eql(['file', 'dir'])
     # end

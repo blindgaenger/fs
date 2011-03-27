@@ -19,8 +19,13 @@ module FS
   end
   
   # Dir#entries
-  def list(dir)
-    Dir.entries(dir)[2..-1]
+  def list(dir, pattern='*')
+    glob(dir, pattern)
+  end
+  
+  # Find#find
+  def find(dir, pattern='*')
+    glob(dir, '**', pattern)
   end
   
   # FileUtils#mv
@@ -45,6 +50,14 @@ module FS
       File.open(file, 'r', &block)
     else
       File.open(file, 'r').read
+    end
+  end
+
+  private
+  
+  def glob(dir, *patterns)
+    Dir.glob(File.join(dir, patterns)).map do |path|
+      path.gsub(/^\.?#{dir}\/?/, '')
     end
   end
   
