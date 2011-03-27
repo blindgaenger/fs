@@ -18,20 +18,6 @@ describe FS do
     end
   end
   
-  describe 'list' do
-    it 'returns an empty list if there are no files' do
-      FS.list('/').should be_empty
-    end
-    
-    it 'lists all files and dirs (without . and ..)' do
-      FS.touch('/foo')
-      FS.makedir('/bar')
-      FS.makedirs('/baz/lala')
-      FS.list('/').should eql(['foo', 'bar', 'baz'])
-      FS.list('/baz').should eql(['lala'])
-    end
-  end
-  
   describe 'makedir' do
     it 'creates a dir' do
       FS.makedir('/foo')
@@ -52,11 +38,57 @@ describe FS do
     end
   end
   
+  describe 'list' do
+    it 'returns an empty list if there are no files' do
+      FS.list('/').should be_empty
+    end
+    
+    it 'lists all files and dirs (without . and ..)' do
+      FS.touch('/foo')
+      FS.makedir('/bar')
+      FS.makedirs('/baz/lala')
+      FS.list('/').should eql(['foo', 'bar', 'baz'])
+      FS.list('/baz').should eql(['lala'])
+    end
+    
+    it 'glob files for a pattern'
+  end
+  
+  describe 'move' do
+    it 'rename a file' do
+      FS.touch('/foo.txt')
+      FS.move('/foo.txt', '/bar.txt')
+      FS.list('/').should eql(['bar.txt'])
+    end
+    
+    # FIXME: fakefs
+    # it 'moves a file' do
+    #   FS.touch('/foo.txt')
+    #   FS.makedirs('/tmp')
+    #   FS.move('/foo.txt', '/tmp')
+    #   FS.list('/').should eql(['tmp'])
+    #   FS.list('/tmp').should eql(['foo.txt'])
+    # end
+    
+    # TODO: use an array of sources
+    # it 'moves files and dirs' do
+    #   FS.touch('/file')
+    #   FS.makedir('/dir')
+    #   FS.makedir('/tmp')
+    #   
+    #   FS.move('/file', '/dir', '/tmp')
+    #   
+    #   FS.list('/').should eql(['tmp'])
+    #   FS.list('/tmp').should eql(['file', 'dir'])
+    # end
+  end
+  
+  # describe 'currentdir'
+  # describe 'changedir'
   # describe 'copy'
-  # describe 'move'
   # describe 'link'
   # describe 'write'
   # describe 'read'
-  # describe 'delete'
+  # describe 'remove'
 
 end
