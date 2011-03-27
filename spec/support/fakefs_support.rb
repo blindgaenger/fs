@@ -21,3 +21,12 @@ module FakeFS
     end
   end
 end
+
+
+module FakeFS
+  class Dir
+    def self.home(user=nil)
+      "/Users/#{user || 'me'}"
+    end
+  end
+end

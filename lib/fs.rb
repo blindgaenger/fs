@@ -35,6 +35,11 @@ module FS
     end
   end
 
+  # FileUtils#rm
+  def remove(*pathes)
+    FileUtils.rm(pathes, :verbose => true)
+  end
+
   # File#open(file, 'w')
   def write(file, content=nil, &block)
     if block_given?
@@ -49,8 +54,19 @@ module FS
     if block_given?
       File.open(file, 'r', &block)
     else
-      File.open(file, 'r').read
+      content = nil
+      File.open(file, 'r') {|f| content = f.read }
+      content
     end
+  end
+
+  
+  def root
+    '/'
+  end
+  
+  def home(user=nil)
+    Dir.home(user)
   end
 
   private

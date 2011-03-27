@@ -119,7 +119,7 @@ describe FS do
     #   FS.list('/tmp').should eql(['foo.txt'])
     # end
     
-    # TODO: use an array of sources
+    # FIXME: fakefs
     # it 'moves files and dirs' do
     #   FS.touch('/file')
     #   FS.makedir('/dir')
@@ -129,13 +129,68 @@ describe FS do
     #   FS.list('/tmp').should eql(['file', 'dir'])
     # end
   end
+
+  describe 'remove' do
+    it 'removes files and dirs' do
+      FS.touch('/file')
+      FS.makedir('/dir')
+      FS.remove('/file', '/dir')
+      FS.list('/').should be_empty
+    end
+
+    # FIXME: fakefs
+    # it 'fails if the dir is not empty' do
+    #   FS.makedir('/foo')
+    #   FS.touch('/foo/bar')
+    #   lambda {FS.remove('/foo')}.should raise_error
+    # end
+  end
+
+  describe 'write' do
+    it 'writes content from a string' do
+      FS.write('/foo.txt', 'bar')
+      File.open('/foo.txt').read.should eql('bar')
+    end
+    
+    it 'writes content from a block' do
+      FS.write('/foo.txt') {|f| f.write 'bar' }
+      File.open('/foo.txt').read.should eql('bar')
+    end
+  end
   
+  describe 'read' do
+    it 'reads the content to a string' do
+      File.open('/foo.txt', 'w') {|f| f.write 'bar' }
+      FS.read('/foo.txt').should eql('bar')
+    end
+    
+    it 'reads the content to a block' do
+      File.open('/foo.txt', 'w') {|f| f.write 'bar' }
+      FS.read('/foo.txt') {|f| f.read.should eql('bar')}
+    end
+  end
+  
+  describe 'root' do
+    it 'always returns /' do
+      FS.root.should eql('/')
+    end
+  end
+
+  describe 'home' do
+    it 'returns the home of the current user' do
+      FS.home.should eql('/Users/me')
+    end
+    
+    it 'returns the home of another user' do
+      FS.home('you').should eql('/Users/you')
+    end
+  end
+  
+  # describe 'removedir'
+  # describe 'removedirs'
   # describe 'currentdir'
   # describe 'changedir'
   # describe 'copy'
   # describe 'link'
-  # describe 'write'
-  # describe 'read'
-  # describe 'remove'
 
 end
