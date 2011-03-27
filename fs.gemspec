@@ -13,6 +13,8 @@ Gem::Specification.new do |s|
   s.description = %q{TODO: Write a gem description}
 
   s.add_development_dependency 'rspec', '2.5.0'
+  s.add_development_dependency 'fakefs', '0.3.1'
+  s.add_development_dependency 'ruby-debug19', '0.11.6'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
