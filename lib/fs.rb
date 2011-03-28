@@ -60,11 +60,12 @@ module FS
     end
   end
 
-  
+  # always returns '/'
   def root
     '/'
   end
   
+  # Dir#home
   def home(user=nil)
     Dir.home(user)
   end
