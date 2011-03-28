@@ -15,8 +15,8 @@ Got the idea?
 
 ## Solution
 
-`FS` gathers the cluttered methods in a single place. Internally using the
-good old standard library, but providing simple methods
+`FS` gathers the cluttered methods for working with files and dirs. Internally 
+using the good old standard library, but providing simple methods in a single place.
 
 ## Examples
 

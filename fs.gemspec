@@ -8,13 +8,12 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Bernd Jünger"]
   s.email       = ["blindgaenger@gmail.com"]
-  s.homepage    = "http://blindgaenger.net"
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.homepage    = "http://github.com/blindgaenger/fs"
+  s.summary     = %q{Work with your filesystem!}
+  s.description = %q{FS gathers the cluttered methods for working with files and dirs. Internally using the good old standard library, but providing simple methods in a single place.}
 
   s.add_development_dependency 'rspec', '2.5.0'
   s.add_development_dependency 'fakefs', '0.3.1'
-  s.add_development_dependency 'ruby-debug19', '0.11.6'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
