@@ -15,13 +15,14 @@ module FS
       FileUtils.mkdir_p(dirs)
     end
 
-    # Dir#entries
-    def list(dir, pattern='*')
+    # Dir#glob
+    def list(dir='.', pattern='*')
       glob(dir, pattern)
     end
 
-    # Find#find
-    def find(dir, pattern='*')
+    # Dir#glob
+    # TODO: use Find#find
+    def find(dir='.', pattern='*')
       glob(dir, '**', pattern)
     end
 
@@ -34,7 +35,7 @@ module FS
 
     # FileUtils#rm
     def remove(*pathes)
-      FileUtils.rm(pathes, :verbose => true)
+      FileUtils.rm(pathes)
     end
 
     # File#open(file, 'w')
@@ -57,17 +58,21 @@ module FS
       end
     end
 
-    # always returns '/'
-    def root
-      '/'
-    end
-
     # Dir#home
     def home(user=nil)
       Dir.home(user)
     end
 
+    # always returns '/'
+    def root
+      '/'
+    end
+
     private
+    
+    def assert_dir(path)
+      raise "not a directory: #{path}" unless File.directory?(path)
+    end
 
     def glob(dir, *patterns)
       Dir.glob(File.join(dir, patterns)).map do |path|

@@ -13,7 +13,6 @@ Gem::Specification.new do |s|
   s.description = %q{FS gathers the cluttered methods for working with files and dirs. Internally using the good old standard library, but providing simple methods in a single place.}
 
   s.add_development_dependency 'rspec', '2.5.0'
-  s.add_development_dependency 'fakefs', '0.3.1'
   s.add_development_dependency 'yard', '0.6.5'
   s.add_development_dependency 'bluecloth', '2.1.0'
 
