@@ -1,18 +1,32 @@
 module FS
   module Base
+    
     # FileUtils.touch
-    def touch(files)
+    def touch(*files)
       FileUtils.touch(files)
     end
 
     # FileUtils#mkdir
-    def makedir(dirs)
+    def makedir(*dirs)
       FileUtils.mkdir(dirs)
     end
 
     # FileUtils#mkdir_p
-    def makedirs(dirs)
+    def makedirs(*dirs)
       FileUtils.mkdir_p(dirs)
+    end
+
+    # FileUtils#rmdir
+    def removedir(*dirs)
+      dirs.each do |dir|
+        raise Errno::ENOTEMPTY unless list(dir).empty?
+      end
+      FileUtils.rmdir(dirs)
+    end
+
+    # FileUtils#rm_r
+    def removedirs(*dirs)
+      FileUtils.rm_r(dirs)
     end
 
     # Dir#glob
@@ -26,13 +40,33 @@ module FS
       glob(dir, '**', pattern)
     end
 
+    # TODO: find time to make this cool, not work only
     # FileUtils#mv
     def move(*froms, to)
       froms.each do |from|
-        FileUtils.mv(from, to)
+        FileUtils.mv(from, to)        
       end
     end
 
+    # TODO: find time to make this cool, not work only
+    # FileUtils#cp
+    def copy(*froms, to)
+      froms.each do |from|
+        FileUtils.cp(from, to)
+      end
+    end
+    
+    # Creates hard links for files and symbolic links for dirs
+    #
+    # FileUtils#ln or FileUtils#ln_s
+    def link(from, to)
+      if File.directory?(from)
+        FileUtils.ln_s(from, to)
+      else
+        FileUtils.ln(from, to)
+      end
+    end
+    
     # FileUtils#rm
     def remove(*pathes)
       FileUtils.rm(pathes)
@@ -68,6 +102,16 @@ module FS
       '/'
     end
 
+    # Dir#chdir
+    def changedir(dir)
+      Dir.chdir(dir)
+    end
+    
+    # Dir#pwd
+    def currentdir
+      Dir.pwd
+    end
+
     private
     
     def assert_dir(path)
@@ -75,9 +119,11 @@ module FS
     end
 
     def glob(dir, *patterns)
-      Dir.glob(File.join(dir, patterns)).map do |path|
-        path.gsub(/^\.?#{dir}\/?/, '')
+      fulldir = File.expand_path(dir)
+      Dir.glob(File.join(fulldir, patterns)).map do |path|
+        path.gsub(/^#{fulldir}\/?/, '')
       end
     end
+    
   end
 end

@@ -9,7 +9,13 @@ describe FS::Base do
       File.exist?(file).should be_true 
     end
     
-    it 'touches a list of files' do
+    it 'accepts multiple files' do
+      FS.touch('foo.txt', 'bar.txt')
+      File.exist?('foo.txt').should be_true
+      File.exist?('bar.txt').should be_true
+    end
+    
+    it 'accepts a list of files' do
       files = ['foo.txt', 'bar.txt']
       FS.touch(files)
       files.each do |file|
@@ -24,6 +30,12 @@ describe FS::Base do
       File.directory?('foo').should be_true
     end
     
+    it 'accepts multiple dirs' do
+      FS.makedir('foo', 'bar')
+      File.directory?('foo').should be_true
+      File.directory?('bar').should be_true
+    end
+    
     it 'fails if a parent dir is missing' do
       lambda {FS.makedir('foo/bar')}.should raise_error
     end
@@ -35,6 +47,43 @@ describe FS::Base do
       File.directory?('foo').should be_true
       File.directory?('foo/bar').should be_true
       File.directory?('foo/bar/baz').should be_true
+    end
+    
+    it 'accepts multiple dirs' do
+      FS.makedirs('foo/bar', 'baz/yep')
+      File.directory?('foo').should be_true
+      File.directory?('foo/bar').should be_true
+      File.directory?('baz').should be_true
+      File.directory?('baz/yep').should be_true
+    end
+  end
+  
+  describe 'removedir' do
+    it 'removes a dir' do
+      FS.makedir('foo')
+      FS.removedir('foo')
+      File.exist?('foo').should be_false
+    end
+    
+    it 'fails if dir not empty' do
+      FS.makedirs('foo/dir')
+      FS.touch('foo/file')
+      lambda {FS.removedir('foo')}.should raise_error
+    end
+  end
+  
+  describe 'removedirs' do
+    it 'removes a dir' do
+      FS.makedir('foo')
+      FS.removedirs('foo')
+      File.exist?('foo').should be_false
+    end
+    
+    it 'removes a dir even if something is inside' do
+      FS.makedirs('foo/dir')
+      FS.touch('foo/file')
+      FS.removedirs('foo')
+      File.exist?('foo').should be_false
     end
   end
   
@@ -120,7 +169,7 @@ describe FS::Base do
   end
   
   describe 'move' do
-    it 'rename a file' do
+    it 'renames a file' do
       FS.touch('foo.txt')
       FS.move('foo.txt', 'bar.txt')
       FS.list.should eql(['bar.txt'])
@@ -141,6 +190,46 @@ describe FS::Base do
       FS.move('file', 'dir', 'tmp')
       FS.list.should eql(['tmp'])
       FS.list('tmp').should eql(['dir', 'file'])
+    end
+  end
+  
+  describe 'copy' do
+    it 'copies a file' do
+      FS.write('foo.txt', 'lala')
+      FS.copy('foo.txt', 'bar.txt')
+      File.exist?('foo.txt').should be_true
+      File.exist?('bar.txt').should be_true
+    end
+
+    it 'copies the content' do
+      FS.write('foo.txt', 'lala')
+      FS.copy('foo.txt', 'bar.txt')
+      FS.read('foo.txt').should eql('lala')
+      FS.read('bar.txt').should eql('lala')
+    end
+    
+    it 'copies a file to a dir' do
+      FS.write('foo.txt', 'lala')
+      FS.makedir('dir')
+      FS.copy('foo.txt', 'dir/bar.txt')
+      File.exist?('foo.txt').should be_true
+      File.exist?('dir/bar.txt').should be_true
+    end
+  end
+  
+  describe 'link' do
+    it 'links to files' do
+      FS.touch('foo.txt')
+      FS.link('foo.txt', 'bar.txt')
+      FS.write('foo.txt', 'lala')
+      FS.read('bar.txt').should eql('lala')
+    end
+    
+    it 'links to dirs' do
+      FS.makedir('foo')
+      FS.link('foo', 'bar')
+      FS.touch('foo/file')
+      FS.list('bar').should eql(['file'])
     end
   end
   
@@ -210,12 +299,27 @@ describe FS::Base do
       FS.home('root').should match(/\/root$/)
     end
   end
-  
-  # describe 'removedir'
-  # describe 'removedirs'
-  # describe 'currentdir'
-  # describe 'changedir'
-  # describe 'copy'
-  # describe 'link'
 
+  describe 'currentdir' do
+    it 'returns the current dir' do
+      FS.currentdir.should eql(@test_dir)
+    end
+    
+    it 'works after dir was changed' do
+      here = FS.currentdir
+      FS.makedir('foo')
+      Dir.chdir('foo')
+      FS.currentdir.should eql(File.join(here, 'foo'))
+    end
+  end
+  
+  describe 'changedir' do
+    it 'change the current dir' do
+      here = Dir.pwd
+      FS.makedir('foo')
+      FS.changedir('foo')
+      Dir.pwd.should eql(File.join(here, 'foo'))
+    end
+  end
+  
 end

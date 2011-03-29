@@ -49,8 +49,20 @@ commands (unsorted).
 
 ## Todo
 
-- Aliases
-- list(dir, '*.rb')
+Here is my mind … here is my mind …
+
+- maybe use underscores (remove_dir)
+- remove! to force something
+- maybe makedir! to mkdir -p
+- use Find#find in FS#find ;)
+- some kind of #tree output
+- file type
+- exist?
+- list_dirs
+- list_files
+- find_dirs
+- find_files
+- FS.link('a.txt' => 'b.txt') with a hash
 
 ## BTW
 
