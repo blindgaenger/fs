@@ -4,6 +4,7 @@ require 'fileutils'
 require 'etc'
 require 'fs/base'
 require 'fs/alias'
+require 'fs/file_tree'
 
 module FS
   include FS::Base
