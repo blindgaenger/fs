@@ -321,4 +321,48 @@ describe FS::Base do
       Dir.pwd.should eql(File.join(here, 'foo'))
     end
   end
+<<<<<<< HEAD
+=======
+  
+  describe 'tree' do
+    before(:each) do
+      FS.touch('a.file')
+      FS.makedir('baz')
+      FS.touch('baz/b.file')
+      FS.mkdir('baz/bar')
+      FS.touch('baz/bar/c.file')
+      FS.touch('baz/d.file')
+      FS.makedir('foo')
+      FS.touch('foo/e.file')
+    end
+
+    it 'returns the tree of the current dir' do
+      tree = <<-TXT
+.
+|-- a.file
+|-- baz
+|   |-- b.file
+|   |-- bar
+|   |   `-- c.file
+|   `-- d.file
+`-- foo
+    `-- e.file
+TXT
+      FS.tree.should eql(tree.strip)
+    end
+
+    it 'returns the tree of a dir' do
+      tree = <<-TXT
+baz
+|-- b.file
+|-- bar
+|   `-- c.file
+`-- d.file
+TXT
+      FS.tree('baz').should eql(tree.strip)
+    end
+
+  end
+  
+>>>>>>> 75fd1f64681ad51d4f68b3c078470ef5d0f47807
 end

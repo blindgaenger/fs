@@ -55,8 +55,11 @@ Here is my mind … here is my mind …
 - remove! to force something
 - maybe makedir! to mkdir -p
 - use Find#find in FS#find ;)
+<<<<<<< HEAD
  * GraphViz would be nice to 
 - some kind of #tree output
+=======
+>>>>>>> 75fd1f64681ad51d4f68b3c078470ef5d0f47807
 - file type
 - exist?
 - list_dirs
