@@ -94,7 +94,7 @@ module FS
 
     # Dir#home
     def home(user=nil)
-      Dir.home(user).extend(FS::FileTreeWrapper)
+      Dir.home(user)
     end
 
     # always returns '/'
@@ -109,7 +109,7 @@ module FS
     
     # Dir#pwd
     def currentdir
-      Dir.pwd.extend(::FS::FileTreeWrapper)
+      Dir.pwd
     end
 
     private

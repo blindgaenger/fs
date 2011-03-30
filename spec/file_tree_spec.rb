@@ -21,12 +21,12 @@ EOF
   end
 
 
-  describe "to_graph wrapper for the FS Module" do
-    it "provides a to_graph method for arrays of pathes" do
+  describe "to_tree wrapper for the FS Module" do
+    it "provides a to_tree method for arrays of pathes" do
       FS.makedirs('one/two/three')
       FS.touch('one/file.one')
       FS.touch('one/two/three/file.three')
-      FS.find.to_graph("*").should ==
+      FS.to_tree(FS.find,"*").should ==
         <<TREE
 **one/
 ****file.one
@@ -37,7 +37,12 @@ TREE
     end
 
     it "provides a to_grpah method for a string" do
-      print FS.currentdir.to_graph("*")
+      FS.to_tree("path/to/file", "*").should  ==
+        <<TREE
+**path/
+****to/
+******file
+TREE
     end
 
   end

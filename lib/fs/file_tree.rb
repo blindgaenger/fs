@@ -26,12 +26,12 @@ class FS::FileTree
 end
 
 module FS::FileTreeWrapper
-  def to_graph(seperator=" ")
-    case self
+  def to_tree(paths,seperator=" ")
+    case paths
     when String
-      ::FS::FileTree.new([self]).to_ascii(seperator)
+      ::FS::FileTree.new([paths]).to_ascii(seperator)
     when Array
-      ::FS::FileTree.new(self).to_ascii(seperator)
+      ::FS::FileTree.new(paths).to_ascii(seperator)
     end
   end
 end
