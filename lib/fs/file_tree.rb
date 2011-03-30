@@ -27,6 +27,11 @@ end
 
 module FS::FileTreeWrapper
   def to_graph(seperator=" ")
-    ::FS::FileTree.new(self).to_ascii(seperator)
+    case self
+    when String
+      ::FS::FileTree.new([self]).to_ascii(seperator)
+    when Array
+      ::FS::FileTree.new(self).to_ascii(seperator)
+    end
   end
 end

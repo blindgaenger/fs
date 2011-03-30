@@ -31,7 +31,7 @@ module FS
 
     # Dir#glob
     def list(dir='.', pattern='*')
-      glob(dir, pattern)
+      glob(dir, pattern).extend(FS::FileTreeWrapper)
     end
 
     # Dir#glob
@@ -94,7 +94,7 @@ module FS
 
     # Dir#home
     def home(user=nil)
-      Dir.home(user)
+      Dir.home(user).extend(FS::FileTreeWrapper)
     end
 
     # always returns '/'
@@ -109,7 +109,7 @@ module FS
     
     # Dir#pwd
     def currentdir
-      Dir.pwd
+      Dir.pwd.extend(::FS::FileTreeWrapper)
     end
 
     private
@@ -122,7 +122,7 @@ module FS
       fulldir = File.expand_path(dir)
       Dir.glob(File.join(fulldir, patterns)).map do |path|
         path.gsub(/^#{fulldir}\/?/, '')
-      end
+      end.extend(FS::FileTreeWrapper)
     end
     
   end

@@ -22,7 +22,7 @@ EOF
 
 
   describe "to_graph wrapper for the FS Module" do
-    it "provides a to_graph method" do
+    it "provides a to_graph method for arrays of pathes" do
       FS.makedirs('one/two/three')
       FS.touch('one/file.one')
       FS.touch('one/two/three/file.three')
@@ -35,6 +35,11 @@ EOF
 ********file.three
 TREE
     end
+
+    it "provides a to_grpah method for a string" do
+      print FS.currentdir.to_graph("*")
+    end
+
   end
 end
 

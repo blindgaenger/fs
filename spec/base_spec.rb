@@ -321,5 +321,4 @@ describe FS::Base do
       Dir.pwd.should eql(File.join(here, 'foo'))
     end
   end
-  
 end
