@@ -55,6 +55,7 @@ Here is my mind … here is my mind …
 - remove! to force something
 - maybe makedir! to mkdir -p
 - use Find#find in FS#find ;)
+ * GraphViz would be nice to 
 - some kind of #tree output
 - file type
 - exist?
@@ -63,6 +64,8 @@ Here is my mind … here is my mind …
 - find_dirs
 - find_files
 - FS.link('a.txt' => 'b.txt') with a hash
+- Probably adding a rename functionality, to move files by specifying a
+  regex. See the bash script "rename" . 
 
 ## BTW
 

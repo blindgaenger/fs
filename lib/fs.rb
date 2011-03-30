@@ -9,5 +9,6 @@ require 'fs/file_tree'
 module FS
   include FS::Base
   include FS::Alias
+  include FS::FileTreeWrapper
   extend self
 end

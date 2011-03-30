@@ -19,5 +19,22 @@ describe FS::FileTree do
 EOF
     end
   end
+
+
+  describe "to_graph wrapper for the FS Module" do
+    it "provides a to_graph method" do
+      FS.makedirs('one/two/three')
+      FS.touch('one/file.one')
+      FS.touch('one/two/three/file.three')
+      FS.find.to_graph("*").should ==
+        <<TREE
+**one/
+****file.one
+****two/
+******three/
+********file.three
+TREE
+    end
+  end
 end
 

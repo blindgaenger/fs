@@ -37,7 +37,7 @@ module FS
     # Dir#glob
     # TODO: use Find#find
     def find(dir='.', pattern='*')
-      glob(dir, '**', pattern)
+      glob(dir, '**', pattern).extend(FS::FileTreeWrapper)
     end
 
     # TODO: find time to make this cool, not work only
