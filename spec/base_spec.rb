@@ -321,8 +321,6 @@ describe FS::Base do
       Dir.pwd.should eql(File.join(here, 'foo'))
     end
   end
-<<<<<<< HEAD
-=======
   
   describe 'tree' do
     before(:each) do
@@ -363,6 +361,4 @@ TXT
     end
 
   end
-  
->>>>>>> 75fd1f64681ad51d4f68b3c078470ef5d0f47807
 end
