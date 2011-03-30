@@ -34,7 +34,21 @@ EOF
       `--three/
          `--file.three
 TREE
+
       end
+      it "works with output of find calle with a search pattern" do
+        FS.makedirs('foo/bar')
+        FS.makedir('foo/baz')
+        FS.touch('foo/bar/ruby1.rb')
+        FS.touch('foo/ruby2.rb')
+        FS.to_tree(FS.find('.', "*.rb")).should == <<EOF
+`--foo/
+   |--bar/
+   |  `--ruby1.rb
+   `--ruby2.rb
+EOF
+      end
+
 
       it "provides a to_grpah method for a string" do
         FS.to_tree("path/to/file").should  ==
