@@ -31,13 +31,13 @@ module FS
 
     # Dir#glob
     def list(dir='.', pattern='*')
-      glob(dir, pattern).extend(FS::FileTreeWrapper)
+      glob(dir, pattern)
     end
 
     # Dir#glob
     # TODO: use Find#find
     def find(dir='.', pattern='*')
-      glob(dir, '**', pattern).extend(FS::FileTreeWrapper)
+      glob(dir, '**', pattern)
     end
 
     # TODO: find time to make this cool, not work only
@@ -122,7 +122,7 @@ module FS
       fulldir = File.expand_path(dir)
       Dir.glob(File.join(fulldir, patterns)).map do |path|
         path.gsub(/^#{fulldir}\/?/, '')
-      end.extend(FS::FileTreeWrapper)
+      end
     end
   end
 end
