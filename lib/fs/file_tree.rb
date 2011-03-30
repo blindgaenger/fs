@@ -27,11 +27,7 @@ end
 
 module FS::FileTreeWrapper
   def to_tree(paths,seperator=" ")
-    case paths
-    when String
-      ::FS::FileTree.new([paths]).to_ascii(seperator)
-    when Array
+      paths = [paths] if paths.is_a?(String)
       ::FS::FileTree.new(paths).to_ascii(seperator)
-    end
   end
 end
