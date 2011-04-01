@@ -25,3 +25,5 @@ command :generate do |c|
   end
 end
 
+default_command :generate
+
