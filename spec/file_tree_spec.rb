@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'awesome_print'
 
 describe FS::FileTree do
   describe "basic graph printing" do

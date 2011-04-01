@@ -6,7 +6,6 @@ module FS
     end
 
     def extract_paths(array)
-
       array.each do |item| 
         item.split(/\//).inject(@paths) do |paths,part|
           paths[part] ||= {}

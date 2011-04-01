@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'commander/import'
+require 'fs'
+require 'awesome_print'
+
+program :version, '0.1'
+program :description, 'Improved version of the bash command #tree'
+
+command :generate do |c|
+  c.syntax = 'tree generate [--dir --glob --exclude-glob]'
+  c.summary = 'Generates a Tree of the current directory.'
+  c.description = 'This command generates a file tree of the specified directory. You can exclude/select specific files using globs.'
+  c.example 'Generates a file tree of ~/Projects excluding the .git dir', "tree generate --dir ~/Projects --glob **/*.rb --exclude .git/**/* "
+  c.option '--exclude LIST',Array, 'Exclude certain dirs/files by specifying a glob'
+  c.option '--glob GLOB',String, 'Cherry pick which files to include in the tree'
+  c.option '--dir PATH',String, 'Root of the tree'
+  c.action do |args, options|
+    options.default :dir => FS.currentdir, :exclude => nil, :glob => '**/*'
+    ap options.exclude
+    tree = FS.find(options.dir,options.glob)
+    tree = (tree - options.exclude.inject([]) { |acc,item| acc.concat FS.find(options.dir,item) }) if options.exclude
+    print FS.to_tree(tree)
+  end
+end
+
