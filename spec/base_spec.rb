@@ -362,4 +362,117 @@ TXT
 
   end
   
+  describe 'exist?' do
+    it 'returns if a path exist' do
+      FS.makedir('foo')
+      FS.touch('bar')
+      FS.exist?('foo').should be_true
+      FS.exist?('bar').should be_true
+      FS.exist?('baz').should be_false
+    end
+  end
+
+  describe 'directory?' do
+    it 'checks for a directory' do
+      FS.makedir('foo')
+      FS.touch('bar')
+      FS.directory?('foo').should be_true
+      FS.directory?('bar').should be_false
+      FS.directory?('baz').should be_false
+    end
+  end
+  
+  describe 'file?' do
+    it 'checks for a file' do
+      FS.makedir('foo')
+      FS.touch('bar')
+      FS.file?('foo').should be_false
+      FS.file?('bar').should be_true
+      FS.file?('baz').should be_false
+    end
+  end
+  
+  describe 'join' do
+    it 'joins pathes' do
+      FS.join('foo', 'bar').should eql('foo/bar')
+      FS.join('foo', '/bar').should eql('foo/bar')
+      FS.join('foo/', 'bar').should eql('foo/bar')
+    end 
+  end
+  
+  describe 'expand_path' do
+    it 'expands pathes' do
+      here = File.expand_path('.')
+      FS.expand_path('.').should eql(here)
+      FS.expand_path('foo').should eql(File.join(here, 'foo'))
+      FS.expand_path('foo/bar').should eql(File.join(here, 'foo', 'bar'))
+    end
+  end
+
+  describe 'absolute?' do
+    it 'checks for an absolute path' do
+      FS.absolute?('/').should be_true
+      FS.absolute?('/foo').should be_true
+      FS.absolute?('.').should be_false
+      FS.absolute?('foo').should be_false
+    end
+  end
+
+  describe 'dirname' do
+    it 'extracts the dir of a path' do
+      FS.dirname('tmp/foo/bar.todo').should eql('tmp/foo')
+      FS.dirname('tmp/foo').should eql('tmp')
+      FS.dirname('tmp/foo/').should eql('tmp')
+      FS.dirname('/tmp').should eql('/')
+      FS.dirname('/').should eql('/')
+      FS.dirname('.').should eql('.')
+    end
+  end
+
+  describe 'basename' do
+    it 'extracts the base of a path' do
+      FS.basename('tmp/foo/bar.todo').should eql('bar.todo')
+      FS.basename('tmp/foo').should eql('foo')
+      FS.basename('tmp/foo/').should eql('foo')
+      FS.basename('/tmp').should eql('tmp')
+      FS.basename('/').should eql('/')
+      FS.basename('.').should eql('.')
+    end
+  end
+  
+  describe 'filename' do
+    it 'extracts the filename of a path' do
+      FS.filename('tmp/foo/bar.todo').should eql('bar')
+      FS.filename('tmp/foo').should eql('foo')
+      FS.filename('tmp/foo/').should eql('foo')
+      FS.filename('/tmp').should eql('tmp')
+      FS.filename('/').should eql('') # this is not like FS.basename
+      FS.filename('.').should eql('') # this is not like FS.basename
+      FS.filename('foo.bar.txt').should eql('foo.bar')
+    end
+  end
+  
+  describe 'extname' do
+    it 'extracts the extension of a path' do
+      FS.extname('tmp/foo/bar.todo').should eql('.todo')
+      FS.extname('tmp/foo').should eql('')
+      FS.extname('tmp/foo/').should eql('')
+      FS.extname('/tmp').should eql('')
+      FS.extname('/').should eql('')
+      FS.extname('.').should eql('')
+      FS.extname('foo.bar.txt').should eql('.txt')
+    end
+  end
+  
+  describe 'splitname' do
+    it 'splits the parts of a path' do
+      FS.splitname('tmp/foo/bar.todo').should eql(["tmp/foo", "bar", ".todo"])
+      FS.splitname('tmp/foo').should eql(['tmp', 'foo', ''])
+      FS.splitname('tmp/foo/').should eql(['tmp', 'foo', ''])
+      FS.splitname('/tmp').should eql(['/', 'tmp', ''])
+      FS.splitname('/').should eql(['/', '', ''])
+      FS.splitname('.').should eql(['.', '', ''])
+    end
+  end
+  
 end

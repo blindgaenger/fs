@@ -119,6 +119,67 @@ module FS
       output.join("\n")
     end
 
+    # File.exist?
+    def exist?(path)
+      File.exist?(path)
+    end
+
+    # File.directory?
+    def directory?(path)
+      File.directory?(path)
+    end
+
+    # File.file?
+    def file?(path)
+      File.file?(path)
+    end
+
+    # File.join
+    def join(*args)
+      File.join(*args)
+    end
+
+    # File.expand_path
+    def expand_path(path)
+      File.expand_path(path)
+    end
+
+    # checks for a slash at the beginning
+    def absolute?(path)
+      %r{\A/} =~ path ? true : false
+    end
+
+    # File.dirname
+    # "tmp/foo/bar.todo" => "tmp/foo"
+    def dirname(path)
+      File.dirname(path)
+    end
+
+    # File.basename
+    # "tmp/foo/bar.todo" => "bar.todo"
+    def basename(path)
+      File.basename(path)
+    end
+
+    # File.extname
+    # "tmp/foo/bar.todo" => ".todo"
+    def extname(path)
+      File.extname(path)
+    end
+
+    # "tmp/foo/bar.todo" => "bar"
+    def filename(path)
+      return '' if path == '/' || path == '.'
+      base = File.basename(path)
+      ext = File.extname(path)
+      ext.empty? ? base :base[0...-ext.size]  
+    end
+
+    # "tmp/foo/bar.todo" => ["tmp/foo", "bar", ".todo"]
+    def splitname(path)
+      [dirname(path), filename(path), extname(path)]
+    end
+
     private
     
     def assert_dir(path)
