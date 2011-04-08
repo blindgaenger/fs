@@ -179,6 +179,16 @@ module FS
     def splitname(path)
       [dirname(path), filename(path), extname(path)]
     end
+    
+    # __FILE__ of the caller
+    def this_file
+      caller_file(caller)
+    end
+    
+    # File.dirname(__FILE__) of the caller
+    def this_dir
+      File.dirname(caller_file(caller))
+    end
 
     private
     
@@ -210,6 +220,23 @@ module FS
       }
       subnodes.each_with_index do |subnode, index|
         visit_tree(output, node_path, indent + arm_to_indent[arm], arms[index], '-- ', subnode)
+      end
+    end
+
+    def caller_file(trace)
+      if arr = parse_caller(trace.first)
+        arr.first
+      end
+    end
+
+    # http://grosser.it/2009/07/01/getting-the-caller-method-in-ruby/
+    # Stolen from ActionMailer, where this was used but was not made reusable
+    def parse_caller(at)
+      if /^(.+?):(\d+)(?::in `(.*)')?/ =~ at
+        file   = Regexp.last_match[1]
+        line   = Regexp.last_match[2].to_i
+        method = Regexp.last_match[3]
+        [file, line, method]
       end
     end
     

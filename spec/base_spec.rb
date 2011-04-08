@@ -475,4 +475,16 @@ TXT
     end
   end
   
+  describe 'this_file' do
+    it 'returns this file' do
+      FS.this_file.should eql(__FILE__)
+    end
+  end
+
+  describe 'this_dir' do
+    it 'returns the dir of this file' do
+      FS.this_dir.should eql(File.dirname(__FILE__))
+    end
+  end
+  
 end
