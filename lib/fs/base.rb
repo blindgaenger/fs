@@ -150,6 +150,18 @@ module FS
       File.file?(path)
     end
 
+    # uses File.size and Dir.entries
+    # for files it returns `nil` if file does not exist, `true` if it's empty
+    def empty?(path)
+      if !File.exist?(path)
+        nil
+      elsif File.directory?(path)
+        Dir.entries(path) == ['.', '..']
+      else
+        File.size(path) == 0
+      end
+    end
+
     # File.join
     def join(*args)
       File.join(*args)

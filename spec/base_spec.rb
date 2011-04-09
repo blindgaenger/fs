@@ -392,6 +392,28 @@ TXT
     end
   end
   
+  describe 'empty?' do
+    it 'returns nil if the path does not exist' do
+      FS.exist?('foobar').should be_false
+      FS.empty?('foobar').should be_nil
+    end
+    
+    it 'returns if a file is empty' do
+      FS.touch('empty.file')
+      FS.write('content.file', 'something')
+      FS.empty?('empty.file').should be_true
+      FS.empty?('content.file').should be_false
+    end
+    
+    it 'returns if a dir is empty' do
+      FS.mkdir('empty.dir')
+      FS.mkdir('content.dir')
+      FS.touch('content.dir/some.file')
+      FS.empty?('empty.dir').should be_true
+      FS.empty?('content.dir').should be_false
+    end
+  end
+  
   describe 'join' do
     it 'joins pathes' do
       FS.join('foo', 'bar').should eql('foo/bar')
@@ -526,7 +548,7 @@ TXT
       file = FS.maketempfile
       File.exist?(file).should be_true
       File.file?(file).should be_true
-      #File.empty?(file).should be_true
+      File.size(file).should eql(0)
       Dir.entries(Dir.tmpdir).should include(File.basename(file))
     end
 
@@ -535,7 +557,7 @@ TXT
       file.should match(/\/my_file/)
       File.exist?(file).should be_true
       File.file?(file).should be_true
-      #File.empty?(file).should be_true
+      File.size(file).should eql(0)
       Dir.entries(Dir.tmpdir).should include(File.basename(file))
     end
     
@@ -544,7 +566,7 @@ TXT
       file = FS.maketempfile(nil, parent_dir)
       File.exist?(file).should be_true
       File.file?(file).should be_true
-      #File.empty?(file).should be_true
+      File.size(file).should eql(0)
       Dir.entries(parent_dir).should include(File.basename(file))
     end
   end
