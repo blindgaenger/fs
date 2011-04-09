@@ -12,8 +12,7 @@ module FS
     def use_helper(describe_block)
       describe_block.before :each do
         unless @test_dir
-          @test_dir = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'tmp', 'test'))
-          FileUtils.mkdir_p(@test_dir)
+          @test_dir = File.realpath(Dir.mktmpdir('test_'))
           Dir.chdir(@test_dir)
         end
       end

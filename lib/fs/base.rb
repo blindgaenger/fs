@@ -198,8 +198,9 @@ module FS
 
     def glob(dir, *patterns)
       fulldir = File.expand_path(dir)
+      regexp = /^#{Regexp.escape(fulldir)}\/?/
       Dir.glob(File.join(fulldir, patterns)).map do |path|
-        path.gsub(/^#{fulldir}\/?/, '')
+        path.gsub(regexp, '')
       end
     end
     
