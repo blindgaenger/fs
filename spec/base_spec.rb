@@ -487,4 +487,66 @@ TXT
     end
   end
   
+  describe 'tempdir' do
+    it 'returns the current temp dir' do
+      FS.tempdir.should eql(Dir.tmpdir)
+    end
+  end
+  
+  describe 'maketempdir' do
+    it 'creates a new dir in the default temp dir' do
+      dir = FS.maketempdir
+      File.exist?(dir).should be_true
+      File.directory?(dir).should be_true
+      Dir.entries(dir).should eql([".", ".."])
+      Dir.entries(Dir.tmpdir).should include(File.basename(dir))
+    end
+    
+    it 'creates a new temp dir with the given prefix' do
+      dir = FS.maketempdir('my_dir')
+      dir.should match(/\/my_dir/)
+      File.exist?(dir).should be_true
+      File.directory?(dir).should be_true
+      Dir.entries(dir).should eql([".", ".."])
+      Dir.entries(Dir.tmpdir).should include(File.basename(dir))
+    end
+    
+    it 'creates a new temp dir inside of the given dir' do
+      parent_dir = FS.maketempdir('parent_dir')
+      dir = FS.maketempdir(nil, parent_dir)
+      File.exist?(dir).should be_true
+      File.directory?(dir).should be_true
+      Dir.entries(dir).should eql([".", ".."])
+      Dir.entries(parent_dir).should include(File.basename(dir))
+    end
+  end
+  
+  describe 'maketempfile' do
+    it 'creates a new file in the default temp dir' do
+      file = FS.maketempfile
+      File.exist?(file).should be_true
+      File.file?(file).should be_true
+      #File.empty?(file).should be_true
+      Dir.entries(Dir.tmpdir).should include(File.basename(file))
+    end
+
+    it 'creates a new temp file with the given prefix' do
+      file = FS.maketempfile('my_file')
+      file.should match(/\/my_file/)
+      File.exist?(file).should be_true
+      File.file?(file).should be_true
+      #File.empty?(file).should be_true
+      Dir.entries(Dir.tmpdir).should include(File.basename(file))
+    end
+    
+    it 'creates a new temp file inside of the given dir' do
+      parent_dir = FS.maketempdir('parent_dir')
+      file = FS.maketempfile(nil, parent_dir)
+      File.exist?(file).should be_true
+      File.file?(file).should be_true
+      #File.empty?(file).should be_true
+      Dir.entries(parent_dir).should include(File.basename(file))
+    end
+  end
+  
 end

@@ -111,6 +111,22 @@ module FS
     def currentdir
       Dir.pwd
     end
+    
+    # tmpdir / Dir.tmpdir
+    def tempdir
+      Dir.tmpdir
+    end
+    
+    # TODO: use separate options for prefix, suffix and target_dir
+    # tmpdir / Dir.mktmpdir
+    def maketempdir(prefix_suffix=nil, parent_dir=nil)
+      Dir.mktmpdir(prefix_suffix, parent_dir)
+    end
+
+    # uses the methods of the tmpdir library to touch a new file in tempdir
+    def maketempfile(prefix_suffix=nil, parent_dir=nil)
+      Dir::Tmpname.create(prefix_suffix || "f", parent_dir || Dir.tmpdir) {|n| FileUtils.touch(n)}
+    end
 
     # same as the `tree` shell command
     def tree(dir='.')
