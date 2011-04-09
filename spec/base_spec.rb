@@ -546,28 +546,28 @@ TXT
   describe 'maketempfile' do
     it 'creates a new file in the default temp dir' do
       file = FS.maketempfile
-      File.exist?(file).should be_true
-      File.file?(file).should be_true
-      File.size(file).should eql(0)
-      Dir.entries(Dir.tmpdir).should include(File.basename(file))
+      FS.exist?(file).should be_true
+      FS.file?(file).should be_true
+      FS.empty?(file).should be_true
+      FS.list(Dir.tmpdir).should include(File.basename(file))
     end
 
     it 'creates a new temp file with the given prefix' do
       file = FS.maketempfile('my_file')
       file.should match(/\/my_file/)
-      File.exist?(file).should be_true
-      File.file?(file).should be_true
-      File.size(file).should eql(0)
-      Dir.entries(Dir.tmpdir).should include(File.basename(file))
+      FS.exist?(file).should be_true
+      FS.file?(file).should be_true
+      FS.empty?(file).should be_true
+      FS.list(Dir.tmpdir).should include(File.basename(file))
     end
     
     it 'creates a new temp file inside of the given dir' do
       parent_dir = FS.maketempdir('parent_dir')
       file = FS.maketempfile(nil, parent_dir)
-      File.exist?(file).should be_true
-      File.file?(file).should be_true
-      File.size(file).should eql(0)
-      Dir.entries(parent_dir).should include(File.basename(file))
+      FS.exist?(file).should be_true
+      FS.file?(file).should be_true
+      FS.empty?(file).should be_true
+      FS.list(parent_dir).should include(File.basename(file))
     end
   end
   
