@@ -37,33 +37,33 @@ using the good old standard library, but providing simple methods in a single pl
 Although verbose method names are good, there are some aliases for unix shell
 commands (unsorted).
 
-- ls => list
-- mkdir => makedir
-- mkdir_p => makedirs
-- cd => changedir
-- mv => move
-- cp => copy
-- rm => remove
-- ln => link
-- cat => read (no concatenate)
+- ls      => :list
+- mkdir   => :makedir
+- mkdir_p => :makedirs
+- rmdir   => :removedir
+- rm_r    => :removedirs
+- cd      => :changedir
+- pwd     => :currentdir
+- mv      => :move
+- cp      => :copy
+- rm      => :remove
+- cat     => :read
+- ln      => :link
+- dir?    => :directory?
+- expand  => :expand_path
+- []      => :join
 
 ## Todo
 
-Here is my mind … here is my mind …
+Here is my mind …
 
 - maybe use underscores (remove_dir)
 - remove! to force something
 - maybe makedir! to mkdir -p
 - use Find#find in FS#find ;)
-- file type
-- exist?
+- file type / ftype
 - list_dirs
 - list_files
 - find_dirs
 - find_files
 - FS.link('a.txt' => 'b.txt') with a hash
-
-## BTW
-
-If you need a replacement for the shell in pure ruby, than have a look at
-[Rush](http://rush.heroku.com/).
