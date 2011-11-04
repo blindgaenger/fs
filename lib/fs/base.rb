@@ -168,8 +168,8 @@ module FS
     end
 
     # File.expand_path
-    def expand_path(path)
-      File.expand_path(path)
+    def expand_path(path, base=nil)
+      File.expand_path(path, base)
     end
 
     # checks for a slash at the beginning

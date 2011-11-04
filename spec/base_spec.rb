@@ -429,6 +429,15 @@ TXT
       FS.expand_path('foo').should eql(File.join(here, 'foo'))
       FS.expand_path('foo/bar').should eql(File.join(here, 'foo', 'bar'))
     end
+
+    it 'uses a base dir to expand the path' do
+      here = File.expand_path('.')
+      FS.expand_path('foo', nil).should eql(File.join(here, 'foo'))
+      FS.expand_path('foo', here).should eql(File.join(here, 'foo'))
+      FS.expand_path('foo', '/').should eql('/foo')
+      FS.expand_path('foo', '/bar').should eql('/bar/foo')
+      FS.expand_path('foo', '/bar/').should eql('/bar/foo')
+    end
   end
 
   describe '::absolute?' do
