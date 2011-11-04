@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe FS::Alias do
-  
+
   FS::Alias::ALIASES.each do |shortcut, original|
     it "#{shortcut} exists for #{original}" do
       FS.respond_to?(shortcut).should be_true
@@ -12,6 +12,6 @@ describe FS::Alias do
       s.parameters.should eql(o.parameters)
     end
   end
-  
+
 end
-  
+

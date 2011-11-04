@@ -15,15 +15,16 @@ module FS
       :ln      => :link,
       :dir?    => :directory?,
       :expand  => :expand_path,
+      :[]      => :join,
     }
-    
+
     def self.included(base)
       base.class_eval do
         ALIASES.each do |shortcut, original|
-          alias_method shortcut, original          
+          alias_method shortcut, original
         end
       end
     end
-    
+
   end
 end

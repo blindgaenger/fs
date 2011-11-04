@@ -1,54 +1,54 @@
 require 'spec_helper'
 
 describe FS::Base do
-  
-  describe 'touch' do
+
+  describe '::touch' do
     it 'touches a single file' do
       file = 'foobar.txt'
       FS.touch(file)
-      File.exist?(file).should be_true 
+      File.exist?(file).should be_true
     end
-    
+
     it 'accepts multiple files' do
       FS.touch('foo.txt', 'bar.txt')
       File.exist?('foo.txt').should be_true
       File.exist?('bar.txt').should be_true
     end
-    
+
     it 'accepts a list of files' do
       files = ['foo.txt', 'bar.txt']
       FS.touch(files)
       files.each do |file|
-        File.exist?(file).should be_true   
+        File.exist?(file).should be_true
       end
     end
   end
-  
-  describe 'makedir' do
+
+  describe '::makedir' do
     it 'creates a dir' do
       FS.makedir('foo')
       File.directory?('foo').should be_true
     end
-    
+
     it 'accepts multiple dirs' do
       FS.makedir('foo', 'bar')
       File.directory?('foo').should be_true
       File.directory?('bar').should be_true
     end
-    
+
     it 'fails if a parent dir is missing' do
       lambda {FS.makedir('foo/bar')}.should raise_error
     end
   end
-  
-  describe 'makedirs' do
+
+  describe '::makedirs' do
     it 'creates all missing parent dirs' do
       FS.makedirs 'foo/bar/baz'
       File.directory?('foo').should be_true
       File.directory?('foo/bar').should be_true
       File.directory?('foo/bar/baz').should be_true
     end
-    
+
     it 'accepts multiple dirs' do
       FS.makedirs('foo/bar', 'baz/yep')
       File.directory?('foo').should be_true
@@ -57,28 +57,28 @@ describe FS::Base do
       File.directory?('baz/yep').should be_true
     end
   end
-  
-  describe 'removedir' do
+
+  describe '::removedir' do
     it 'removes a dir' do
       FS.makedir('foo')
       FS.removedir('foo')
       File.exist?('foo').should be_false
     end
-    
+
     it 'fails if dir not empty' do
       FS.makedirs('foo/dir')
       FS.touch('foo/file')
       lambda {FS.removedir('foo')}.should raise_error
     end
   end
-  
-  describe 'removedirs' do
+
+  describe '::removedirs' do
     it 'removes a dir' do
       FS.makedir('foo')
       FS.removedirs('foo')
       File.exist?('foo').should be_false
     end
-    
+
     it 'removes a dir even if something is inside' do
       FS.makedirs('foo/dir')
       FS.touch('foo/file')
@@ -86,18 +86,18 @@ describe FS::Base do
       File.exist?('foo').should be_false
     end
   end
-  
-  describe 'list' do
+
+  describe '::list' do
     it 'returns an empty list if there are no files' do
       FS.list.should be_empty
     end
-    
+
     it 'lists all files and dirs (without . and ..)' do
       FS.touch('file')
       FS.makedir('dir')
       FS.list.should eql(['dir', 'file'])
     end
-    
+
     it 'lists files and dirs in the current dir' do
       FS.makedir('foo')
       FS.makedir('foo/dir')
@@ -105,7 +105,7 @@ describe FS::Base do
       Dir.chdir('foo')
       FS.list.should eql(['dir', 'file'])
     end
-    
+
     it 'globs files and dirs' do
       FS.touch('file.txt')
       FS.touch('file.rb')
@@ -113,7 +113,7 @@ describe FS::Base do
       FS.makedir('dir.rb')
       FS.list('.', '*.txt').should eql(['dir.txt', 'file.txt'])
     end
-    
+
     it 'globs files and dirs' do
       FS.touch('file.txt')
       FS.touch('file.rb')
@@ -121,14 +121,14 @@ describe FS::Base do
       FS.makedir('dir.rb')
       FS.list('.', '*.txt').should eql(['dir.txt', 'file.txt'])
     end
-  
+
     it 'lists files and dirs in a subdir' do
       FS.makedir('foo')
       FS.makedir('foo/dir')
       FS.touch('foo/file')
       FS.list('foo').should eql(['dir', 'file'])
     end
-    
+
     it 'globs files and dirs in a subdir' do
       FS.makedir('foo')
       FS.touch('foo/file.txt')
@@ -138,12 +138,12 @@ describe FS::Base do
       FS.list('foo', '*.txt').should eql(['dir.txt', 'file.txt'])
     end
   end
-  
-  describe 'find' do
+
+  describe '::find' do
     it 'returns an empty list if there are no files' do
       FS.find('.').should be_empty
     end
-    
+
     it 'finds files in all subdirs' do
       FS.makedirs('one/two/three')
       FS.touch('one/file.one')
@@ -156,7 +156,7 @@ describe FS::Base do
         'one/two/three/file.three'
       ])
     end
-    
+
     it 'globs files in all subdirs' do
       FS.makedirs('one/two/three')
       FS.touch('one/file.one')
@@ -167,14 +167,14 @@ describe FS::Base do
       ])
     end
   end
-  
-  describe 'move' do
+
+  describe '::move' do
     it 'renames a file' do
       FS.touch('foo.txt')
       FS.move('foo.txt', 'bar.txt')
       FS.list.should eql(['bar.txt'])
     end
-    
+
     it 'moves a file' do
       FS.touch('foo.txt')
       FS.makedirs('tmp')
@@ -182,7 +182,7 @@ describe FS::Base do
       FS.list.should eql(['tmp'])
       FS.list('tmp').should eql(['foo.txt'])
     end
-    
+
     it 'moves files and dirs' do
       FS.touch('file')
       FS.makedir('dir')
@@ -192,8 +192,8 @@ describe FS::Base do
       FS.list('tmp').should eql(['dir', 'file'])
     end
   end
-  
-  describe 'copy' do
+
+  describe '::copy' do
     it 'copies a file' do
       FS.write('foo.txt', 'lala')
       FS.copy('foo.txt', 'bar.txt')
@@ -207,7 +207,7 @@ describe FS::Base do
       FS.read('foo.txt').should eql('lala')
       FS.read('bar.txt').should eql('lala')
     end
-    
+
     it 'copies a file to a dir' do
       FS.write('foo.txt', 'lala')
       FS.makedir('dir')
@@ -216,15 +216,15 @@ describe FS::Base do
       File.exist?('dir/bar.txt').should be_true
     end
   end
-  
-  describe 'link' do
+
+  describe '::link' do
     it 'links to files' do
       FS.touch('foo.txt')
       FS.link('foo.txt', 'bar.txt')
       FS.write('foo.txt', 'lala')
       FS.read('bar.txt').should eql('lala')
     end
-    
+
     it 'links to dirs' do
       FS.makedir('foo')
       FS.link('foo', 'bar')
@@ -232,8 +232,8 @@ describe FS::Base do
       FS.list('bar').should eql(['file'])
     end
   end
-  
-  describe 'remove' do
+
+  describe '::remove' do
     it 'removes files' do
       FS.touch('file')
       FS.remove('file')
@@ -246,12 +246,12 @@ describe FS::Base do
       FS.remove('file.a', 'file.b')
       FS.list.should be_empty
     end
-    
+
     it 'fails on dirs' do
       FS.makedir('dir')
       lambda {FS.remove('dir')}.should raise_error
     end
-    
+
     # FIXME: fakefs
     # it 'fails if the dir is not empty' do
     #   FS.makedir('/foo')
@@ -259,52 +259,52 @@ describe FS::Base do
     #   lambda {FS.remove('/foo')}.should raise_error
     # end
   end
-  
-  describe 'write' do
+
+  describe '::write' do
     it 'writes content from a string' do
       FS.write('foo.txt', 'bar')
       File.open('foo.txt').read.should eql('bar')
     end
-    
+
     it 'writes content from a block' do
       FS.write('foo.txt') {|f| f.write 'bar' }
       File.open('foo.txt').read.should eql('bar')
     end
   end
-  
-  describe 'read' do
+
+  describe '::read' do
     it 'reads the content to a string' do
       File.open('foo.txt', 'w') {|f| f.write 'bar' }
       FS.read('foo.txt').should eql('bar')
     end
-    
+
     it 'reads the content to a block' do
       File.open('foo.txt', 'w') {|f| f.write 'bar' }
       FS.read('foo.txt') {|f| f.read.should eql('bar')}
     end
   end
-  
-  describe 'root' do
+
+  describe '::root' do
     it 'always returns /' do
       FS.root.should eql('/')
     end
   end
-  
-  describe 'home' do
+
+  describe '::home' do
     it 'returns the home of the current user' do
       FS.home.should match(/\/#{Etc.getlogin}$/)
     end
-    
+
     it 'returns the home of another user' do
       FS.home('root').should match(/\/root$/)
     end
   end
 
-  describe 'currentdir' do
+  describe '::currentdir' do
     it 'returns the current dir' do
       FS.currentdir.should eql(@test_dir)
     end
-    
+
     it 'works after dir was changed' do
       here = FS.currentdir
       FS.makedir('foo')
@@ -312,8 +312,8 @@ describe FS::Base do
       FS.currentdir.should eql(File.join(here, 'foo'))
     end
   end
-  
-  describe 'changedir' do
+
+  describe '::changedir' do
     it 'change the current dir' do
       here = Dir.pwd
       FS.makedir('foo')
@@ -321,8 +321,8 @@ describe FS::Base do
       Dir.pwd.should eql(File.join(here, 'foo'))
     end
   end
-  
-  describe 'tree' do
+
+  describe '::tree' do
     before(:each) do
       FS.touch('a.file')
       FS.makedir('baz')
@@ -361,8 +361,8 @@ TXT
     end
 
   end
-  
-  describe 'exist?' do
+
+  describe '::exist?' do
     it 'returns if a path exist' do
       FS.makedir('foo')
       FS.touch('bar')
@@ -372,7 +372,7 @@ TXT
     end
   end
 
-  describe 'directory?' do
+  describe '::directory?' do
     it 'checks for a directory' do
       FS.makedir('foo')
       FS.touch('bar')
@@ -381,8 +381,8 @@ TXT
       FS.directory?('baz').should be_false
     end
   end
-  
-  describe 'file?' do
+
+  describe '::file?' do
     it 'checks for a file' do
       FS.makedir('foo')
       FS.touch('bar')
@@ -391,20 +391,20 @@ TXT
       FS.file?('baz').should be_false
     end
   end
-  
-  describe 'empty?' do
+
+  describe '::empty?' do
     it 'returns nil if the path does not exist' do
       FS.exist?('foobar').should be_false
       FS.empty?('foobar').should be_nil
     end
-    
+
     it 'returns if a file is empty' do
       FS.touch('empty.file')
       FS.write('content.file', 'something')
       FS.empty?('empty.file').should be_true
       FS.empty?('content.file').should be_false
     end
-    
+
     it 'returns if a dir is empty' do
       FS.mkdir('empty.dir')
       FS.mkdir('content.dir')
@@ -413,16 +413,16 @@ TXT
       FS.empty?('content.dir').should be_false
     end
   end
-  
-  describe 'join' do
+
+  describe '::join' do
     it 'joins pathes' do
       FS.join('foo', 'bar').should eql('foo/bar')
       FS.join('foo', '/bar').should eql('foo/bar')
       FS.join('foo/', 'bar').should eql('foo/bar')
-    end 
+    end
   end
-  
-  describe 'expand_path' do
+
+  describe '::expand_path' do
     it 'expands pathes' do
       here = File.expand_path('.')
       FS.expand_path('.').should eql(here)
@@ -431,7 +431,7 @@ TXT
     end
   end
 
-  describe 'absolute?' do
+  describe '::absolute?' do
     it 'checks for an absolute path' do
       FS.absolute?('/').should be_true
       FS.absolute?('/foo').should be_true
@@ -440,7 +440,7 @@ TXT
     end
   end
 
-  describe 'dirname' do
+  describe '::dirname' do
     it 'extracts the dir of a path' do
       FS.dirname('tmp/foo/bar.todo').should eql('tmp/foo')
       FS.dirname('tmp/foo').should eql('tmp')
@@ -451,7 +451,7 @@ TXT
     end
   end
 
-  describe 'basename' do
+  describe '::basename' do
     it 'extracts the base of a path' do
       FS.basename('tmp/foo/bar.todo').should eql('bar.todo')
       FS.basename('tmp/foo').should eql('foo')
@@ -461,8 +461,8 @@ TXT
       FS.basename('.').should eql('.')
     end
   end
-  
-  describe 'filename' do
+
+  describe '::filename' do
     it 'extracts the filename of a path' do
       FS.filename('tmp/foo/bar.todo').should eql('bar')
       FS.filename('tmp/foo').should eql('foo')
@@ -473,8 +473,8 @@ TXT
       FS.filename('foo.bar.txt').should eql('foo.bar')
     end
   end
-  
-  describe 'extname' do
+
+  describe '::extname' do
     it 'extracts the extension of a path' do
       FS.extname('tmp/foo/bar.todo').should eql('.todo')
       FS.extname('tmp/foo').should eql('')
@@ -485,8 +485,8 @@ TXT
       FS.extname('foo.bar.txt').should eql('.txt')
     end
   end
-  
-  describe 'splitname' do
+
+  describe '::splitname' do
     it 'splits the parts of a path' do
       FS.splitname('tmp/foo/bar.todo').should eql(["tmp/foo", "bar", ".todo"])
       FS.splitname('tmp/foo').should eql(['tmp', 'foo', ''])
@@ -496,26 +496,26 @@ TXT
       FS.splitname('.').should eql(['.', '', ''])
     end
   end
-  
-  describe 'this_file' do
+
+  describe '::this_file' do
     it 'returns this file' do
       FS.this_file.should eql(__FILE__)
     end
   end
 
-  describe 'this_dir' do
+  describe '::this_dir' do
     it 'returns the dir of this file' do
       FS.this_dir.should eql(File.dirname(__FILE__))
     end
   end
-  
-  describe 'tempdir' do
+
+  describe '::tempdir' do
     it 'returns the current temp dir' do
       FS.tempdir.should eql(Dir.tmpdir)
     end
   end
-  
-  describe 'maketempdir' do
+
+  describe '::maketempdir' do
     it 'creates a new dir in the default temp dir' do
       dir = FS.maketempdir
       File.exist?(dir).should be_true
@@ -523,7 +523,7 @@ TXT
       Dir.entries(dir).should eql([".", ".."])
       Dir.entries(Dir.tmpdir).should include(File.basename(dir))
     end
-    
+
     it 'creates a new temp dir with the given prefix' do
       dir = FS.maketempdir('my_dir')
       dir.should match(/\/my_dir/)
@@ -532,7 +532,7 @@ TXT
       Dir.entries(dir).should eql([".", ".."])
       Dir.entries(Dir.tmpdir).should include(File.basename(dir))
     end
-    
+
     it 'creates a new temp dir inside of the given dir' do
       parent_dir = FS.maketempdir('parent_dir')
       dir = FS.maketempdir(nil, parent_dir)
@@ -542,8 +542,8 @@ TXT
       Dir.entries(parent_dir).should include(File.basename(dir))
     end
   end
-  
-  describe 'maketempfile' do
+
+  describe '::maketempfile' do
     it 'creates a new file in the default temp dir' do
       file = FS.maketempfile
       FS.exist?(file).should be_true
@@ -560,7 +560,7 @@ TXT
       FS.empty?(file).should be_true
       FS.list(Dir.tmpdir).should include(File.basename(file))
     end
-    
+
     it 'creates a new temp file inside of the given dir' do
       parent_dir = FS.maketempdir('parent_dir')
       file = FS.maketempfile(nil, parent_dir)
@@ -570,5 +570,5 @@ TXT
       FS.list(parent_dir).should include(File.basename(file))
     end
   end
-  
+
 end

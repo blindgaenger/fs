@@ -1,6 +1,6 @@
 module FS
   module Base
-    
+
     # FileUtils.touch
     def touch(*files)
       FileUtils.touch(files)
@@ -44,7 +44,7 @@ module FS
     # FileUtils#mv
     def move(*froms, to)
       froms.each do |from|
-        FileUtils.mv(from, to)        
+        FileUtils.mv(from, to)
       end
     end
 
@@ -55,7 +55,7 @@ module FS
         FileUtils.cp(from, to)
       end
     end
-    
+
     # Creates hard links for files and symbolic links for dirs
     #
     # FileUtils#ln or FileUtils#ln_s
@@ -66,7 +66,7 @@ module FS
         FileUtils.ln(from, to)
       end
     end
-    
+
     # FileUtils#rm
     def remove(*pathes)
       FileUtils.rm(pathes)
@@ -106,17 +106,17 @@ module FS
     def changedir(dir)
       Dir.chdir(dir)
     end
-    
+
     # Dir#pwd
     def currentdir
       Dir.pwd
     end
-    
+
     # tmpdir / Dir.tmpdir
     def tempdir
       Dir.tmpdir
     end
-    
+
     # TODO: use separate options for prefix, suffix and target_dir
     # tmpdir / Dir.mktmpdir
     def maketempdir(prefix_suffix=nil, parent_dir=nil)
@@ -200,26 +200,26 @@ module FS
       return '' if path == '/' || path == '.'
       base = File.basename(path)
       ext = File.extname(path)
-      ext.empty? ? base :base[0...-ext.size]  
+      ext.empty? ? base :base[0...-ext.size]
     end
 
     # "tmp/foo/bar.todo" => ["tmp/foo", "bar", ".todo"]
     def splitname(path)
       [dirname(path), filename(path), extname(path)]
     end
-    
+
     # __FILE__ of the caller
     def this_file
       caller_file(caller)
     end
-    
+
     # File.dirname(__FILE__) of the caller
     def this_dir
       File.dirname(caller_file(caller))
     end
 
     private
-    
+
     def assert_dir(path)
       raise "not a directory: #{path}" unless File.directory?(path)
     end
@@ -231,16 +231,16 @@ module FS
         path.gsub(regexp, '')
       end
     end
-    
+
     def visit_tree(output, parent_path, indent, arm, tie, node)
       output << "#{indent}#{arm}#{tie}#{node}"
-      
+
       node_path = File.expand_path(node, parent_path)
       return unless File.directory?(node_path) && File.readable?(node_path)
-      
+
       subnodes = FS.list(node_path)
       return if subnodes.empty?
-      
+
       arms = Array.new(subnodes.length - 1, '|') << '`'
       arm_to_indent = {
         ''  => '',
@@ -268,6 +268,6 @@ module FS
         [file, line, method]
       end
     end
-    
+
   end
 end

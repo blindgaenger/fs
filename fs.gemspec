@@ -12,12 +12,13 @@ Gem::Specification.new do |s|
   s.summary     = %q{Work with your filesystem!}
   s.description = %q{FS gathers the cluttered methods for working with files and dirs. Internally using the good old standard library, but providing simple methods in a single place.}
 
-  s.add_development_dependency 'rspec', '2.5.0'
-  s.add_development_dependency 'yard', '0.6.5'
-  s.add_development_dependency 'bluecloth', '2.1.0'
-
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+
+  s.add_development_dependency 'rake', '0.9.2.2'
+  s.add_development_dependency 'rspec', '2.7.0'
+  s.add_development_dependency 'yard', '0.7.2'
+  s.add_development_dependency 'bluecloth', '2.2.0'
 end

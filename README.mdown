@@ -8,14 +8,14 @@ This Gem shouldn't reinvent the wheel or be a replacement.
 But in Ruby working with the filesystem really hurts!
 
 In your toolbox are at least `File`, `Dir`, `FileUtils`, `Find`, and maybe some more.
-Good tools, but to complicated for most cases. 
+Good tools, but to complicated for most cases.
 It's not about piping, or copying the shell as it is.
-But think about a simple `ls` in the shell, than how you would do this in Ruby. 
+But think about a simple `ls` in the shell, than how you would do this in Ruby.
 Got the idea?
 
 ## Solution
 
-`FS` gathers the cluttered methods for working with files and dirs. Internally 
+`FS` gathers the cluttered methods for working with files and dirs. Internally
 using the good old standard library, but providing simple methods in a single place.
 
 ## Examples
@@ -34,7 +34,7 @@ using the good old standard library, but providing simple methods in a single pl
 
 ## Aliases
 
-Although verbose method names are good, there are some aliases for unix shell 
+Although verbose method names are good, there are some aliases for unix shell
 commands (unsorted).
 
 - ls => list
@@ -65,5 +65,5 @@ Here is my mind … here is my mind …
 
 ## BTW
 
-If you need a replacement for the shell in pure ruby, than have a look at 
+If you need a replacement for the shell in pure ruby, than have a look at
 [Rush](http://rush.heroku.com/).
