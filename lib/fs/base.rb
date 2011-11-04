@@ -93,8 +93,9 @@ module FS
     end
 
     # Dir#home
+    # the path is always expanded
     def home(user=nil)
-      Dir.home(user)
+      File.expand_path(Dir.home(user))
     end
 
     # always returns '/'
@@ -209,13 +210,15 @@ module FS
     end
 
     # __FILE__ of the caller
+    # the path is always expanded
     def this_file
-      caller_file(caller)
+      File.expand_path(caller_file(caller))
     end
 
     # File.dirname(__FILE__) of the caller
+    # the path is always expanded
     def this_dir
-      File.dirname(caller_file(caller))
+      File.expand_path(File.dirname(caller_file(caller)))
     end
 
     private
