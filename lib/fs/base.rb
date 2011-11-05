@@ -173,6 +173,20 @@ module FS
       File.expand_path(path, base)
     end
 
+    # chop base from the path
+    # if it's not a subdir the absolute path will be returned
+    def chop_path(path, base='.')
+      full_base = File.expand_path(base)
+      full_path = File.expand_path(path)
+      if full_path == full_base
+        '.'
+      elsif full_path.start_with?(full_base)
+        full_path[full_base.size+1..-1]
+      else
+        full_path
+      end
+    end
+
     # checks for a slash at the beginning
     def absolute?(path)
       %r{\A/} =~ path ? true : false

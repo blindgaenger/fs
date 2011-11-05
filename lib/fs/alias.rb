@@ -15,6 +15,7 @@ module FS
       :ln      => :link,
       :dir?    => :directory?,
       :expand  => :expand_path,
+      :chop    => :chop_path,
       :[]      => :join,
     }
 

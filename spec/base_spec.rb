@@ -440,6 +440,37 @@ TXT
     end
   end
 
+  describe '::chop_path' do
+    it 'does nothing for relative paths' do
+      FS.chop_path('.').should eql('.')
+      FS.chop_path('./foo').should eql('foo')
+      FS.chop_path('foo').should eql('foo')
+      FS.chop_path('foo/bar').should eql('foo/bar')
+    end
+
+    it 'does not chop for non subdirs' do
+      FS.chop_path('/').should eql('/')
+      FS.chop_path('..').should eql(File.expand_path('..'))
+      FS.chop_path('/foo', '/foo/bar').should eql('/foo')
+    end
+
+    it 'chop absolute the path' do
+      here = File.expand_path('.')
+      FS.chop_path(here).should eql('.')
+      FS.chop_path(File.join(here, '.')).should eql('.')
+      FS.chop_path(File.join(here, 'foo')).should eql('foo')
+      FS.chop_path(File.join(here, 'foo/bar')).should eql('foo/bar')
+      FS.chop_path('/foo/bar').should eql('/foo/bar')
+    end
+
+    it 'uses a base dir to chop the path' do
+      FS.chop_path('.', '.').should eql('.')
+      FS.chop_path('/', '/').should eql('.')
+      FS.chop_path('/foo', '/foo').should eql('.')
+      FS.chop_path('/foo/bar', '/foo').should eql('bar')
+    end
+  end
+
   describe '::absolute?' do
     it 'checks for an absolute path' do
       FS.absolute?('/').should be_true
