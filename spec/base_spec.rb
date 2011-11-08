@@ -137,18 +137,12 @@ describe FS::Base do
       FS.makedir('foo/dir.rb')
       FS.list('foo', '*.txt').should eql(['dir.txt', 'file.txt'])
     end
-  end
 
-  describe '::find' do
-    it 'returns an empty list if there are no files' do
-      FS.find('.').should be_empty
-    end
-
-    it 'finds files in all subdirs' do
+    it 'lists files in all subdirs' do
       FS.makedirs('one/two/three')
       FS.touch('one/file.one')
       FS.touch('one/two/three/file.three')
-      FS.find.should eql([
+      FS.list('.', '**/*').should eql([
         'one',
         'one/file.one',
         'one/two',
@@ -161,7 +155,7 @@ describe FS::Base do
       FS.makedirs('one/two/three')
       FS.touch('one/file.one')
       FS.touch('one/two/three/file.three')
-      FS.find('.', 'file.*').should eql([
+      FS.list('.', '**/file.*').should eql([
         'one/file.one',
         'one/two/three/file.three'
       ])

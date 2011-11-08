@@ -34,12 +34,6 @@ module FS
       glob(dir, pattern)
     end
 
-    # Dir#glob
-    # TODO: use Find#find
-    def find(dir='.', pattern='*')
-      glob(dir, '**', pattern)
-    end
-
     # TODO: find time to make this cool, not work only
     # FileUtils#mv
     def move(*froms, to)
