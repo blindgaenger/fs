@@ -6,7 +6,8 @@ describe FS::Find do
     FS.touch    'b.txt'
     FS.makedirs 'bar'
     FS.touch    'bar/c.txt'
-    FS.touch    'bar/d.txt'
+    FS.makedirs 'bar/foo'
+    FS.touch    'bar/foo/d.txt'
     FS.makedirs 'baz'
     FS.makedirs 'baz/lala'
     FS.touch    'e.txt'
@@ -19,7 +20,8 @@ describe FS::Find do
         b.txt
         bar
         bar/c.txt
-        bar/d.txt
+        bar/foo
+        bar/foo/d.txt
         baz
         baz/lala
         e.txt
@@ -33,7 +35,8 @@ describe FS::Find do
         b.txt
         bar
         bar/c.txt
-        bar/d.txt
+        bar/foo
+        bar/foo/d.txt
         baz
         baz/lala
         e.txt
@@ -46,7 +49,8 @@ describe FS::Find do
         FS[@test_dir, 'b.txt'],
         FS[@test_dir, 'bar'],
         FS[@test_dir, 'bar/c.txt'],
-        FS[@test_dir, 'bar/d.txt'],
+        FS[@test_dir, 'bar/foo'],
+        FS[@test_dir, 'bar/foo/d.txt'],
         FS[@test_dir, 'baz'],
         FS[@test_dir, 'baz/lala'],
         FS[@test_dir, 'e.txt']
@@ -65,7 +69,8 @@ describe FS::Find do
         b.txt
         bar
         bar/c.txt
-        bar/d.txt
+        bar/foo
+        bar/foo/d.txt
         baz
         baz/lala
         e.txt
@@ -77,6 +82,7 @@ describe FS::Find do
     it 'returns dirs only' do
       FS.find_dirs(@test_dir).should == %w(
         bar
+        bar/foo
         baz
         baz/lala
       )
@@ -91,6 +97,7 @@ describe FS::Find do
 
       result.should == %w(
         bar
+        bar/foo
         baz
         baz/lala
       )
@@ -104,7 +111,7 @@ describe FS::Find do
         a.txt
         b.txt
         bar/c.txt
-        bar/d.txt
+        bar/foo/d.txt
         e.txt
       )
     end
@@ -120,7 +127,7 @@ describe FS::Find do
         a.txt
         b.txt
         bar/c.txt
-        bar/d.txt
+        bar/foo/d.txt
         e.txt
       )
     end
