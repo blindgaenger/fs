@@ -15,7 +15,7 @@ describe FS do
     end
 
     it 'is empty' do
-      Dir.entries(@test_dir).should eql([".", ".."])
+      Dir.entries(@test_dir).should =~ ['.', '..']
     end
 
     it 'is the current dir' do

@@ -580,7 +580,7 @@ TXT
       dir = FS.maketempdir
       File.exist?(dir).should be_true
       File.directory?(dir).should be_true
-      Dir.entries(dir).should eql([".", ".."])
+      Dir.entries(dir).should =~ ['.', '..']
       Dir.entries(Dir.tmpdir).should include(File.basename(dir))
     end
 
@@ -589,7 +589,7 @@ TXT
       dir.should match(/\/my_dir/)
       File.exist?(dir).should be_true
       File.directory?(dir).should be_true
-      Dir.entries(dir).should eql([".", ".."])
+      Dir.entries(dir).should =~ ['.', '..']
       Dir.entries(Dir.tmpdir).should include(File.basename(dir))
     end
 
@@ -598,7 +598,7 @@ TXT
       dir = FS.maketempdir(nil, parent_dir)
       File.exist?(dir).should be_true
       File.directory?(dir).should be_true
-      Dir.entries(dir).should eql([".", ".."])
+      Dir.entries(dir).should =~ ['.', '..']
       Dir.entries(parent_dir).should include(File.basename(dir))
     end
   end
