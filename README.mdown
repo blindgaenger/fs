@@ -1,4 +1,5 @@
-# FS (FileSystem)
+# FS (FileSystem) [![Build Status](http://travis-ci.org/blindgaenger/fs.png)](http://travis-ci.org/blindgaenger/fs)
+
 
 Work with your filesystem!
 
