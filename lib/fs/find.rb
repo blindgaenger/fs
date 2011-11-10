@@ -1,7 +1,7 @@
 module FS
   module Find
 
-    # Find#find
+    # Find::find
     def find(dir, options={}, &block)
       defaults = {
         :current => false,

@@ -60,6 +60,7 @@ Here is my mind …
 - maybe use underscores (remove_dir)
 - remove! to force something
 - maybe makedir! to mkdir -p
+- maybe touch! to mkdir -p && touch
 - use Find#find in FS#find ;)
 - file type / ftype
 - list_dirs

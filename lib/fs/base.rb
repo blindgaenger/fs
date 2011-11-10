@@ -31,7 +31,15 @@ module FS
 
     # Dir#glob
     def list(dir='.', pattern='*')
-      glob(dir, pattern)
+      glob(dir, pattern, nil)
+    end
+
+    def list_dirs(dir='.', pattern='*')
+      glob(dir, pattern, ->(path){FS.directory?(path)})
+    end
+
+    def list_files(dir='.', pattern='*')
+      glob(dir, pattern, ->(path){FS.file?(path)})
     end
 
     # TODO: find time to make this cool, not work only
@@ -235,12 +243,13 @@ module FS
       raise "not a directory: #{path}" unless File.directory?(path)
     end
 
-    def glob(dir, *patterns)
+    def glob(dir, *patterns, condition)
       fulldir = File.expand_path(dir)
       regexp = /^#{Regexp.escape(fulldir)}\/?/
-      Dir.glob(File.join(fulldir, patterns)).map do |path|
-        path.gsub(regexp, '')
-      end
+      Dir.
+        glob(File.join(fulldir, patterns)).
+        select {|path| condition.nil? || condition[path] }.
+        map {|path| path.gsub(regexp, '') }
     end
 
     def visit_tree(output, parent_path, indent, arm, tie, node)
@@ -270,7 +279,7 @@ module FS
     end
 
     # http://grosser.it/2009/07/01/getting-the-caller-method-in-ruby/
-    # Stolen from ActionMailer, where this was used but was not made reusable
+    # Stolen from ActionMailer, where it wasn't reusable
     def parse_caller(at)
       if /^(.+?):(\d+)(?::in `(.*)')?/ =~ at
         file   = Regexp.last_match[1]

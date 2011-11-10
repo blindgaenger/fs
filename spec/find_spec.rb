@@ -104,7 +104,6 @@ describe FS::Find do
     end
   end
 
-
   describe '::find_files' do
     it 'returns files only' do
       FS.find_files(@test_dir).should == %w(

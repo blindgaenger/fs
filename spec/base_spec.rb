@@ -162,6 +162,32 @@ describe FS::Base do
     end
   end
 
+  describe '::list_dirs' do
+    it 'lists dirs only' do
+      FS.touch('bar.file')
+      FS.makedir('bar.dir')
+      FS.touch('foo.file')
+      FS.makedir('foo.dir')
+      FS.list_dirs.should eql([
+        'bar.dir',
+        'foo.dir'
+      ])
+    end
+  end
+
+  describe '::list_files' do
+    it 'lists files only' do
+      FS.touch('bar.file')
+      FS.makedir('bar.dir')
+      FS.touch('foo.file')
+      FS.makedir('foo.dir')
+      FS.list_files.should eql([
+        'bar.file',
+        'foo.file'
+      ])
+    end
+  end
+
   describe '::move' do
     it 'renames a file' do
       FS.touch('foo.txt')
@@ -321,7 +347,7 @@ describe FS::Base do
       FS.touch('a.file')
       FS.makedir('baz')
       FS.touch('baz/b.file')
-      FS.mkdir('baz/bar')
+      FS.makedir('baz/bar')
       FS.touch('baz/bar/c.file')
       FS.touch('baz/d.file')
       FS.makedir('foo')
@@ -400,8 +426,8 @@ TXT
     end
 
     it 'returns if a dir is empty' do
-      FS.mkdir('empty.dir')
-      FS.mkdir('content.dir')
+      FS.makedir('empty.dir')
+      FS.makedir('content.dir')
       FS.touch('content.dir/some.file')
       FS.empty?('empty.dir').should be_true
       FS.empty?('content.dir').should be_false
