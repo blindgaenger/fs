@@ -249,7 +249,8 @@ module FS
       Dir.
         glob(File.join(fulldir, patterns)).
         select {|path| condition.nil? || condition[path] }.
-        map {|path| path.gsub(regexp, '') }
+        map {|path| path.gsub(regexp, '') }.
+        sort
     end
 
     def visit_tree(output, parent_path, indent, arm, tie, node)
