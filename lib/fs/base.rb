@@ -19,7 +19,7 @@ module FS
     # FileUtils#rmdir
     def removedir(*dirs)
       dirs.each do |dir|
-        raise Errno::ENOTEMPTY unless list(dir).empty?
+        raise Errno::ENOTEMPTY unless empty?(dir)
       end
       FileUtils.rmdir(dirs)
     end
@@ -238,10 +238,6 @@ module FS
     end
 
     private
-
-    def assert_dir(path)
-      raise "not a directory: #{path}" unless File.directory?(path)
-    end
 
     def glob(dir, *patterns, condition)
       fulldir = File.expand_path(dir)

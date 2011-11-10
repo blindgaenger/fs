@@ -37,7 +37,7 @@ describe FS::Base do
     end
 
     it 'fails if a parent dir is missing' do
-      lambda {FS.makedir('foo/bar')}.should raise_error(Errno::ENOENT)
+      lambda {FS.makedir('foo/bar')}.should raise_error
     end
   end
 
@@ -269,7 +269,7 @@ describe FS::Base do
 
     it 'fails on dirs' do
       FS.makedir('dir')
-      lambda {FS.remove('dir')}.should raise_error(Errno::EPERM)
+      lambda {FS.remove('dir')}.should raise_error
     end
 
     # FIXME: fakefs
