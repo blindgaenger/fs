@@ -1,6 +1,6 @@
 module FS
   module SpecHelpers
-    
+
     def self.extended(example_group)
       example_group.use_helper(example_group)
     end
@@ -24,7 +24,7 @@ module FS
         end
       end
     end
-    
+
   end
 end
 

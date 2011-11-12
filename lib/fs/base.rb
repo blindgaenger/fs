@@ -31,15 +31,15 @@ module FS
 
     # Dir#glob
     def list(dir='.', pattern='*')
-      glob(dir, pattern, nil)
+      glob(dir, pattern)
     end
 
     def list_dirs(dir='.', pattern='*')
-      glob(dir, pattern, ->(path){FS.directory?(path)})
+      glob(dir, pattern) {|path| FS.directory?(path) }
     end
 
     def list_files(dir='.', pattern='*')
-      glob(dir, pattern, ->(path){FS.file?(path)})
+      glob(dir, pattern) {|path| FS.file?(path) }
     end
 
     # TODO: find time to make this cool, not work only
@@ -239,12 +239,12 @@ module FS
 
     private
 
-    def glob(dir, *patterns, condition)
+    def glob(dir, *patterns, &block)
       fulldir = File.expand_path(dir)
       regexp = /^#{Regexp.escape(fulldir)}\/?/
       Dir.
         glob(File.join(fulldir, patterns)).
-        select {|path| condition.nil? || condition[path] }.
+        select {|path| block.nil? || block[path] }.
         map {|path| path.gsub(regexp, '') }.
         sort
     end

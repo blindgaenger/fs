@@ -29,12 +29,12 @@ module FS
     end
 
     def find_dirs(dir, options={}, &block)
-      condition = ->(path){FileTest.directory?(path)}
+      condition = ->(path){ FileTest.directory?(path) }
       find(dir, options.merge(:condition => condition), &block)
     end
 
     def find_files(dir, options={}, &block)
-      condition = ->(path){!FileTest.directory?(path)}
+      condition = ->(path){ !FileTest.directory?(path) }
       find(dir, options.merge(:condition => condition), &block)
     end
 

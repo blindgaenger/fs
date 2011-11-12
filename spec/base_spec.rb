@@ -37,7 +37,7 @@ describe FS::Base do
     end
 
     it 'fails if a parent dir is missing' do
-      lambda {FS.makedir('foo/bar')}.should raise_error
+      ->{ FS.makedir('foo/bar') }.should raise_error
     end
   end
 
@@ -68,7 +68,7 @@ describe FS::Base do
     it 'fails if dir not empty' do
       FS.makedirs('foo/dir')
       FS.touch('foo/file')
-      lambda {FS.removedir('foo')}.should raise_error(Errno::ENOTEMPTY)
+      ->{ FS.removedir('foo') }.should raise_error(Errno::ENOTEMPTY)
     end
   end
 
@@ -269,14 +269,14 @@ describe FS::Base do
 
     it 'fails on dirs' do
       FS.makedir('dir')
-      lambda {FS.remove('dir')}.should raise_error
+      ->{ FS.remove('dir') }.should raise_error
     end
 
     # FIXME: fakefs
     # it 'fails if the dir is not empty' do
     #   FS.makedir('/foo')
     #   FS.touch('/foo/bar')
-    #   lambda {FS.remove('/foo')}.should raise_error
+    #   ->{ FS.remove('/foo') }.should raise_error
     # end
   end
 
@@ -415,7 +415,7 @@ TXT
   describe '::empty?' do
     it 'returns nil if the path does not exist' do
       FS.exist?('foobar').should be_false
-      lambda {FS.empty?('foobar')}.should raise_error(Errno::ENOENT)
+      ->{ FS.empty?('foobar') }.should raise_error(Errno::ENOENT)
     end
 
     it 'returns if a file is empty' do
