@@ -105,6 +105,17 @@ module FS
       end
     end
 
+    # File#open(file, 'r') =~ /REGEX/
+    def grep(file, regexp, &block)
+      if block_given?
+        File.open(file, 'r').each {|line| line.chomp!; block[line] if line =~ regexp }
+      else
+        lines = []
+        File.open(file, 'r').each {|line| line.chomp!; lines << line if line =~ regexp }
+        lines
+      end
+    end
+
     # Dir#home
     # the path is always expanded
     def home(user=nil)

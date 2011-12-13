@@ -322,6 +322,22 @@ describe FS::Base do
     end
   end
 
+  describe '::grep' do
+    before do
+      File.open('foo.txt', 'w') {|f| f.write "this\nis\nthe\ntest" }
+    end
+
+    it 'greps matching lines to an array' do
+      FS.grep('foo.txt', /is/).should eql(['this', 'is'])
+    end
+
+    it 'yields matching lines to a block' do
+      lines = []
+      FS.grep('foo.txt', /is/) {|line| lines << line}
+      lines.should eql(['this', 'is'])
+    end
+  end
+
   describe '::root' do
     it 'always returns /' do
       FS.root.should eql('/')
