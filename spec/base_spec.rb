@@ -293,14 +293,32 @@ describe FS::Base do
   end
 
   describe '::read' do
-    it 'reads the content to a string' do
+    before do
       File.open('foo.txt', 'w') {|f| f.write 'bar' }
+    end
+
+    it 'reads the content to a string' do
       FS.read('foo.txt').should eql('bar')
     end
 
-    it 'reads the content to a block' do
-      File.open('foo.txt', 'w') {|f| f.write 'bar' }
-      FS.read('foo.txt') {|f| f.read.should eql('bar')}
+    it 'yields the content to a block' do
+      FS.read('foo.txt') {|content| content.should eql('bar')}
+    end
+  end
+
+  describe '::read_lines' do
+    before do
+      File.open('foo.txt', 'w') {|f| f.write "bar\nbaz\nqux" }
+    end
+
+    it 'reads all lines to an array' do
+      FS.read_lines('foo.txt').should eql(['bar', 'baz', 'qux'])
+    end
+
+    it 'yields all lines to a block' do
+      lines = []
+      FS.read_lines('foo.txt') {|line| lines << line}
+      lines.should eql(['bar', 'baz', 'qux'])
     end
   end
 

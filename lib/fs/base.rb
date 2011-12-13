@@ -83,14 +83,25 @@ module FS
       end
     end
 
-    # File#open(file, 'r')
+    # File#open(file, 'r').read
     def read(file, &block)
       if block_given?
-        File.open(file, 'r', &block)
+        File.open(file, 'r') {|f| block[f.read] }
       else
         content = nil
         File.open(file, 'r') {|f| content = f.read }
         content
+      end
+    end
+
+    # File#open(file, 'r').each
+    def read_lines(file, &block)
+      if block_given?
+        File.open(file, 'r').each {|line| line.chomp!; block[line] }
+      else
+        lines = []
+        File.open(file, 'r').each {|line| line.chomp!; lines << line }
+        lines
       end
     end
 
