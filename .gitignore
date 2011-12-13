@@ -4,5 +4,3 @@ Gemfile.lock
 pkg/*
 .rvmrc
 .rbenv-version
-.yardoc/
-doc/
