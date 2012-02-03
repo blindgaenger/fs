@@ -239,7 +239,8 @@ module FS
       return '' if path == '/' || path == '.'
       base = File.basename(path)
       ext = File.extname(path)
-      ext.empty? ? base :base[0...-ext.size]
+      return base if ext.empty?
+      base[0...-ext.size]
     end
 
     # "tmp/foo/bar.todo" => ["tmp/foo", "bar", ".todo"]
