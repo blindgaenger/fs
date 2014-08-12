@@ -5,13 +5,15 @@ require 'etc'
 require 'tmpdir'
 require 'find'
 
-require 'fs/base'
+require 'fs/old'
+require 'fs/dir'
 require 'fs/find'
 require 'fs/tree'
 require 'fs/alias'
 
 module FS
-  include FS::Base
+  include FS::Old
+  include FS::Dir
   include FS::Find
   include FS::Tree
   include FS::Alias

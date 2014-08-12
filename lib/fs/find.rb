@@ -15,7 +15,7 @@ module FS
       full_dir = File.expand_path(dir)
       ::Find.find(dir) do |full_path|
         next if !options[:current] && full_path == full_dir
-        path = options[:absolute] ? full_path : FS.chop(full_path, full_dir)
+        path = options[:absolute] ? full_path : FS.chop_path(full_path, full_dir)
         next if options[:condition] && !options[:condition][path]
 
         if block

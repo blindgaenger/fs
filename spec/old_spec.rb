@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe FS::Base do
+describe FS::Old do
   before { reset_fs }
 
   describe '::touch' do
@@ -336,44 +336,6 @@ describe FS::Base do
       lines = []
       FS.grep('foo.txt', /is/) {|line| lines << line}
       lines.must_equal(['this', 'is'])
-    end
-  end
-
-  describe '::root' do
-    it 'always returns /' do
-      FS.root.must_equal('/')
-    end
-  end
-
-  describe '::home' do
-    it 'returns the home of the current user' do
-      FS.home.must_match(/\/#{Etc.getlogin}$/)
-    end
-
-    it 'returns the home of another user' do
-      FS.home('root').must_match(/\/root$/)
-    end
-  end
-
-  describe '::currentdir' do
-    it 'returns the current dir' do
-      FS.currentdir.must_equal(TEST_DIR)
-    end
-
-    it 'works after dir was changed' do
-      here = FS.currentdir
-      FS.makedir('foo')
-      Dir.chdir('foo')
-      FS.currentdir.must_equal(File.join(here, 'foo'))
-    end
-  end
-
-  describe '::changedir' do
-    it 'change the current dir' do
-      here = Dir.pwd
-      FS.makedir('foo')
-      FS.changedir('foo')
-      Dir.pwd.must_equal(File.join(here, 'foo'))
     end
   end
 

@@ -1,5 +1,5 @@
 module FS
-  module Base
+  module Old
 
     # FileUtils.touch
     def touch(*files)
@@ -116,41 +116,20 @@ module FS
       end
     end
 
-    # Dir#home
-    # the path is always expanded
-    def home(user=nil)
-      File.expand_path(Dir.home(user))
-    end
-
-    # always returns '/'
-    def root
-      '/'
-    end
-
-    # Dir#chdir
-    def changedir(dir)
-      Dir.chdir(dir)
-    end
-
-    # Dir#pwd
-    def currentdir
-      Dir.pwd
-    end
-
-    # tmpdir / Dir.tmpdir
+    # tmpdir / ::Dir.tmpdir
     def tempdir
-      Dir.tmpdir
+      ::Dir.tmpdir
     end
 
     # TODO: use separate options for prefix, suffix and target_dir
-    # tmpdir / Dir.mktmpdir
+    # tmpdir / ::Dir.mktmpdir
     def maketempdir(prefix_suffix=nil, parent_dir=nil)
-      Dir.mktmpdir(prefix_suffix, parent_dir)
+      ::Dir.mktmpdir(prefix_suffix, parent_dir)
     end
 
     # uses the methods of the tmpdir library to touch a new file in tempdir
     def maketempfile(prefix_suffix=nil, parent_dir=nil)
-      Dir::Tmpname.create(prefix_suffix || "f", parent_dir || Dir.tmpdir) {|n| FileUtils.touch(n)}
+      ::Dir::Tmpname.create(prefix_suffix || "f", parent_dir || ::Dir.tmpdir) {|n| FileUtils.touch(n)}
     end
 
     # File.exist?
@@ -168,12 +147,12 @@ module FS
       File.file?(path)
     end
 
-    # uses File.size and Dir.entries
+    # uses File.size and ::Dir.entries
     # for files it returns `nil` if file does not exist, `true` if it's empty
     def empty?(path)
       raise Errno::ENOENT unless File.exist?(path)
       if File.directory?(path)
-        files = Dir.entries(path)
+        files = ::Dir.entries(path)
         files.size == 2 && files.sort == ['.', '..']
       else
         File.size(path) == 0
@@ -258,7 +237,7 @@ module FS
     def glob(dir, *patterns, &block)
       fulldir = File.expand_path(dir)
       regexp = /^#{Regexp.escape(fulldir)}\/?/
-      Dir.
+      ::Dir.
         glob(File.join(fulldir, patterns)).
         select {|path| block.nil? || block[path] }.
         map {|path| path.gsub(regexp, '') }.

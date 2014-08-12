@@ -15,9 +15,9 @@ module FS
     TEST_DIR = File.expand_path '../../tmp/workspace', __FILE__
 
     def reset_fs
-      FS.removedirs(TEST_DIR) if FS.exist?(TEST_DIR)
-      FS.makedirs(TEST_DIR)
-      FS.changedir(TEST_DIR)
+      FileUtils.rm_r(TEST_DIR) if File.exist?(TEST_DIR)
+      FileUtils.mkdir_p(TEST_DIR)
+      ::Dir.chdir(TEST_DIR)
     end
   end
 end
