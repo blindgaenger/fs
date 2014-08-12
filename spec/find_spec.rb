@@ -1,7 +1,8 @@
-require 'spec_helper'
+require_relative 'spec_helper'
 
 describe FS::Find do
   before do
+    reset_fs
     FS.touch    'a.txt'
     FS.touch    'b.txt'
     FS.makedirs 'bar'
@@ -15,7 +16,7 @@ describe FS::Find do
 
   describe '::find' do
     it 'returns the subdirs and files' do
-      FS.find(@test_dir).should == %w(
+      FS.find(TEST_DIR).must_equal %w(
         a.txt
         b.txt
         bar
@@ -29,7 +30,7 @@ describe FS::Find do
     end
 
     it 'returns current dir, subdirs and files' do
-      FS.find(@test_dir, :current => true).should == %w(
+      FS.find(TEST_DIR, :current => true).must_equal %w(
         .
         a.txt
         b.txt
@@ -44,27 +45,27 @@ describe FS::Find do
     end
 
     it 'returns the full path' do
-      FS.find(@test_dir, :absolute => true).should == [
-        FS[@test_dir, 'a.txt'],
-        FS[@test_dir, 'b.txt'],
-        FS[@test_dir, 'bar'],
-        FS[@test_dir, 'bar/c.txt'],
-        FS[@test_dir, 'bar/foo'],
-        FS[@test_dir, 'bar/foo/d.txt'],
-        FS[@test_dir, 'baz'],
-        FS[@test_dir, 'baz/lala'],
-        FS[@test_dir, 'e.txt']
+      FS.find(TEST_DIR, :absolute => true).must_equal [
+        FS[TEST_DIR, 'a.txt'],
+        FS[TEST_DIR, 'b.txt'],
+        FS[TEST_DIR, 'bar'],
+        FS[TEST_DIR, 'bar/c.txt'],
+        FS[TEST_DIR, 'bar/foo'],
+        FS[TEST_DIR, 'bar/foo/d.txt'],
+        FS[TEST_DIR, 'baz'],
+        FS[TEST_DIR, 'baz/lala'],
+        FS[TEST_DIR, 'e.txt']
       ]
     end
 
     it 'yields the result' do
       result = []
 
-      FS.find(@test_dir) do |path|
+      FS.find(TEST_DIR) do |path|
         result << path
       end
 
-      result.should == %w(
+      result.must_equal %w(
         a.txt
         b.txt
         bar
@@ -80,7 +81,7 @@ describe FS::Find do
 
   describe '::find_dirs' do
     it 'returns dirs only' do
-      FS.find_dirs(@test_dir).should == %w(
+      FS.find_dirs(TEST_DIR).must_equal %w(
         bar
         bar/foo
         baz
@@ -91,11 +92,11 @@ describe FS::Find do
     it 'yields dirs only' do
       result = []
 
-      FS.find_dirs(@test_dir) do |path|
+      FS.find_dirs(TEST_DIR) do |path|
         result << path
       end
 
-      result.should == %w(
+      result.must_equal %w(
         bar
         bar/foo
         baz
@@ -106,7 +107,7 @@ describe FS::Find do
 
   describe '::find_files' do
     it 'returns files only' do
-      FS.find_files(@test_dir).should == %w(
+      FS.find_files(TEST_DIR).must_equal %w(
         a.txt
         b.txt
         bar/c.txt
@@ -118,11 +119,11 @@ describe FS::Find do
     it 'yields files only' do
       result = []
 
-      FS.find_files(@test_dir) do |path|
+      FS.find_files(TEST_DIR) do |path|
         result << path
       end
 
-      result.should == %w(
+      result.must_equal %w(
         a.txt
         b.txt
         bar/c.txt
