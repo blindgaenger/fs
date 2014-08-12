@@ -1,22 +1,24 @@
-# -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "fs/version"
+# coding: utf-8
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'fs/version'
 
-Gem::Specification.new do |s|
-  s.name        = "fs"
-  s.version     = FS::VERSION
-  s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Bernd Jünger"]
-  s.email       = ["blindgaenger@gmail.com"]
-  s.homepage    = "http://github.com/blindgaenger/fs"
-  s.summary     = %q{Work with your filesystem!}
-  s.description = %q{FS gathers the cluttered methods for working with files and dirs. Internally using the good old standard library, but providing simple methods in a single place.}
+Gem::Specification.new do |spec|
+  spec.name          = 'fs'
+  spec.version       = FS::VERSION
+  spec.authors       = ['Bernd Jünger']
+  spec.email         = ['blindgaenger@gmail.com']
+  spec.homepage      = 'http://github.com/blindgaenger/fs'
+  spec.summary       = %q{Work with your filesystem!}
+  spec.description   = %q{FS gathers the cluttered methods for working with files and dirs. Internally using the good old standard library, but providing simple methods in a single place.}
+  spec.license       = 'MIT'
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  spec.files         = `git ls-files -z`.split("\x0")
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.require_paths = ['lib']
 
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec'
+  spec.add_development_dependency 'bundler', '~> 1.6'
+  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rspec'
 end
