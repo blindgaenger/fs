@@ -7,11 +7,13 @@ require 'find'
 
 require 'fs/base'
 require 'fs/find'
+require 'fs/tree'
 require 'fs/alias'
 
 module FS
   include FS::Base
   include FS::Find
+  include FS::Tree
   include FS::Alias
   extend self
 end
