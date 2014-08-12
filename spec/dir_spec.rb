@@ -33,5 +33,17 @@ describe FS::Dir do
       FS::Dir.change_dir('foo')
       Dir.pwd.must_equal(File.join(here, 'foo'))
     end
+
+    it 'changes the dir only within the given block' do
+      here = Dir.pwd
+
+      FS.makedir('foo')
+      FS::Dir.change_dir 'foo' do |dir|
+        dir.must_equal 'foo'
+        Dir.pwd.must_equal File.join(here, 'foo')
+      end
+
+      Dir.pwd.must_equal(here)
+    end
   end
 end

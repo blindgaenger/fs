@@ -14,8 +14,8 @@ module FS
     end
 
     # Dir#chdir
-    def change_dir(dir)
-      ::Dir.chdir(dir)
+    def change_dir(dir, &block)
+      ::Dir.chdir(dir, &block)
     end
 
   end
