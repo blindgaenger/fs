@@ -2,10 +2,10 @@ module FS
   module Alias
     ALIASES = {
       :ls      => :list,
-      :mkdir   => :makedir,
-      :mkdir_p => :makedirs,
-      :rmdir   => :removedir,
-      :rm_r    => :removedirs,
+      # :mkdir   => :make_dir,
+      # :mkdir_p => :make_dirs,
+      # :rmdir   => :remove_dir,
+      # :rm_r    => :remove_dirs,
       :cd      => :change_dir,
       :pwd     => :current_dir,
       :mv      => :move,

@@ -25,69 +25,6 @@ describe FS::Old do
     end
   end
 
-  describe '::makedir' do
-    it 'creates a dir' do
-      FS.makedir('foo')
-      File.directory?('foo').must_equal true
-    end
-
-    it 'accepts multiple dirs' do
-      FS.makedir('foo', 'bar')
-      File.directory?('foo').must_equal true
-      File.directory?('bar').must_equal true
-    end
-
-    it 'fails if a parent dir is missing' do
-      ->{ FS.makedir('foo/bar') }.must_raise(Errno::ENOENT)
-    end
-  end
-
-  describe '::makedirs' do
-    it 'creates all missing parent dirs' do
-      FS.makedirs 'foo/bar/baz'
-      File.directory?('foo').must_equal true
-      File.directory?('foo/bar').must_equal true
-      File.directory?('foo/bar/baz').must_equal true
-    end
-
-    it 'accepts multiple dirs' do
-      FS.makedirs('foo/bar', 'baz/yep')
-      File.directory?('foo').must_equal true
-      File.directory?('foo/bar').must_equal true
-      File.directory?('baz').must_equal true
-      File.directory?('baz/yep').must_equal true
-    end
-  end
-
-  describe '::removedir' do
-    it 'removes a dir' do
-      FS.makedir('foo')
-      FS.removedir('foo')
-      File.exist?('foo').must_equal false
-    end
-
-    it 'fails if dir not empty' do
-      FS.makedirs('foo/dir')
-      FS.touch('foo/file')
-      ->{ FS.removedir('foo') }.must_raise(Errno::ENOTEMPTY)
-    end
-  end
-
-  describe '::removedirs' do
-    it 'removes a dir' do
-      FS.makedir('foo')
-      FS.removedirs('foo')
-      File.exist?('foo').must_equal false
-    end
-
-    it 'removes a dir even if something is inside' do
-      FS.makedirs('foo/dir')
-      FS.touch('foo/file')
-      FS.removedirs('foo')
-      File.exist?('foo').must_equal false
-    end
-  end
-
   describe '::list' do
     it 'returns an empty list if there are no files' do
       FS.list.must_equal([])
@@ -95,13 +32,13 @@ describe FS::Old do
 
     it 'lists all files and dirs (without . and ..)' do
       FS.touch('file')
-      FS.makedir('dir')
+      FS.make_dir('dir')
       FS.list.must_equal(['dir', 'file'])
     end
 
     it 'lists files and dirs in the current dir' do
-      FS.makedir('foo')
-      FS.makedir('foo/dir')
+      FS.make_dir('foo')
+      FS.make_dir('foo/dir')
       FS.touch('foo/file')
       Dir.chdir('foo')
       FS.list.must_equal(['dir', 'file'])
@@ -110,37 +47,37 @@ describe FS::Old do
     it 'globs files and dirs' do
       FS.touch('file.txt')
       FS.touch('file.rb')
-      FS.makedir('dir.txt')
-      FS.makedir('dir.rb')
+      FS.make_dir('dir.txt')
+      FS.make_dir('dir.rb')
       FS.list('.', '*.txt').must_equal(['dir.txt', 'file.txt'])
     end
 
     it 'globs files and dirs' do
       FS.touch('file.txt')
       FS.touch('file.rb')
-      FS.makedir('dir.txt')
-      FS.makedir('dir.rb')
+      FS.make_dir('dir.txt')
+      FS.make_dir('dir.rb')
       FS.list('.', '*.txt').must_equal(['dir.txt', 'file.txt'])
     end
 
     it 'lists files and dirs in a subdir' do
-      FS.makedir('foo')
-      FS.makedir('foo/dir')
+      FS.make_dir('foo')
+      FS.make_dir('foo/dir')
       FS.touch('foo/file')
       FS.list('foo').must_equal(['dir', 'file'])
     end
 
     it 'globs files and dirs in a subdir' do
-      FS.makedir('foo')
+      FS.make_dir('foo')
       FS.touch('foo/file.txt')
       FS.touch('foo/file.rb')
-      FS.makedir('foo/dir.txt')
-      FS.makedir('foo/dir.rb')
+      FS.make_dir('foo/dir.txt')
+      FS.make_dir('foo/dir.rb')
       FS.list('foo', '*.txt').must_equal(['dir.txt', 'file.txt'])
     end
 
     it 'lists files in all subdirs' do
-      FS.makedirs('one/two/three')
+      FS.make_dir!('one/two/three')
       FS.touch('one/file.one')
       FS.touch('one/two/three/file.three')
       FS.list('.', '**/*').must_equal([
@@ -153,7 +90,7 @@ describe FS::Old do
     end
 
     it 'globs files in all subdirs' do
-      FS.makedirs('one/two/three')
+      FS.make_dir!('one/two/three')
       FS.touch('one/file.one')
       FS.touch('one/two/three/file.three')
       FS.list('.', '**/file.*').must_equal([
@@ -166,9 +103,9 @@ describe FS::Old do
   describe '::list_dirs' do
     it 'lists dirs only' do
       FS.touch('bar.file')
-      FS.makedir('bar.dir')
+      FS.make_dir('bar.dir')
       FS.touch('foo.file')
-      FS.makedir('foo.dir')
+      FS.make_dir('foo.dir')
       FS.list_dirs.must_equal([
         'bar.dir',
         'foo.dir'
@@ -179,9 +116,9 @@ describe FS::Old do
   describe '::list_files' do
     it 'lists files only' do
       FS.touch('bar.file')
-      FS.makedir('bar.dir')
+      FS.make_dir('bar.dir')
       FS.touch('foo.file')
-      FS.makedir('foo.dir')
+      FS.make_dir('foo.dir')
       FS.list_files.must_equal([
         'bar.file',
         'foo.file'
@@ -198,7 +135,7 @@ describe FS::Old do
 
     it 'moves a file' do
       FS.touch('foo.txt')
-      FS.makedirs('tmp')
+      FS.make_dir('tmp')
       FS.move('foo.txt', 'tmp')
       FS.list.must_equal(['tmp'])
       FS.list('tmp').must_equal(['foo.txt'])
@@ -206,8 +143,8 @@ describe FS::Old do
 
     it 'moves files and dirs' do
       FS.touch('file')
-      FS.makedir('dir')
-      FS.makedir('tmp')
+      FS.make_dir('dir')
+      FS.make_dir('tmp')
       FS.move('file', 'dir', 'tmp')
       FS.list.must_equal(['tmp'])
       FS.list('tmp').must_equal(['dir', 'file'])
@@ -231,7 +168,7 @@ describe FS::Old do
 
     it 'copies a file to a dir' do
       FS.write('foo.txt', 'lala')
-      FS.makedir('dir')
+      FS.make_dir('dir')
       FS.copy('foo.txt', 'dir/bar.txt')
       File.exist?('foo.txt').must_equal true
       File.exist?('dir/bar.txt').must_equal true
@@ -247,7 +184,7 @@ describe FS::Old do
     end
 
     it 'links to dirs' do
-      FS.makedir('foo')
+      FS.make_dir('foo')
       FS.link('foo', 'bar')
       FS.touch('foo/file')
       FS.list('bar').must_equal(['file'])
@@ -269,13 +206,13 @@ describe FS::Old do
     end
 
     it 'fails on dirs' do
-      FS.makedir('dir')
+      FS.make_dir('dir')
       ->{ FS.remove('dir') }.must_raise(Errno::EPERM)
     end
 
     # FIXME: fakefs
     # it 'fails if the dir is not empty' do
-    #   FS.makedir('/foo')
+    #   FS.make_dir('/foo')
     #   FS.touch('/foo/bar')
     #   ->{ FS.remove('/foo') }.must_raise
     # end
@@ -341,7 +278,7 @@ describe FS::Old do
 
   describe '::exist?' do
     it 'returns if a path exist' do
-      FS.makedir('foo')
+      FS.make_dir('foo')
       FS.touch('bar')
       FS.exist?('foo').must_equal true
       FS.exist?('bar').must_equal true
@@ -351,7 +288,7 @@ describe FS::Old do
 
   describe '::directory?' do
     it 'checks for a directory' do
-      FS.makedir('foo')
+      FS.make_dir('foo')
       FS.touch('bar')
       FS.directory?('foo').must_equal true
       FS.directory?('bar').must_equal false
@@ -361,7 +298,7 @@ describe FS::Old do
 
   describe '::file?' do
     it 'checks for a file' do
-      FS.makedir('foo')
+      FS.make_dir('foo')
       FS.touch('bar')
       FS.file?('foo').must_equal false
       FS.file?('bar').must_equal true
@@ -383,8 +320,8 @@ describe FS::Old do
     end
 
     it 'returns if a dir is empty' do
-      FS.makedir('empty.dir')
-      FS.makedir('content.dir')
+      FS.make_dir('empty.dir')
+      FS.make_dir('content.dir')
       FS.touch('content.dir/some.file')
       FS.empty?('empty.dir').must_equal true
       FS.empty?('content.dir').must_equal false

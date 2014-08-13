@@ -6,12 +6,12 @@ describe FS::Tree do
   describe '::tree' do
     before(:each) do
       FS.touch('a.file')
-      FS.makedir('baz')
+      FS.make_dir('baz')
       FS.touch('baz/b.file')
-      FS.makedir('baz/bar')
+      FS.make_dir!('baz/bar')
       FS.touch('baz/bar/c.file')
       FS.touch('baz/d.file')
-      FS.makedir('foo')
+      FS.make_dir('foo')
       FS.touch('foo/e.file')
     end
 

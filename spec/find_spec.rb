@@ -3,15 +3,15 @@ require_relative 'spec_helper'
 describe FS::Find do
   before do
     reset_fs
-    FS.touch    'a.txt'
-    FS.touch    'b.txt'
-    FS.makedirs 'bar'
-    FS.touch    'bar/c.txt'
-    FS.makedirs 'bar/foo'
-    FS.touch    'bar/foo/d.txt'
-    FS.makedirs 'baz'
-    FS.makedirs 'baz/lala'
-    FS.touch    'e.txt'
+    FS.touch     'a.txt'
+    FS.touch     'b.txt'
+    FS.make_dir! 'bar'
+    FS.touch     'bar/c.txt'
+    FS.make_dir! 'bar/foo'
+    FS.touch     'bar/foo/d.txt'
+    FS.make_dir! 'baz'
+    FS.make_dir! 'baz/lala'
+    FS.touch     'e.txt'
   end
 
   describe '::find' do

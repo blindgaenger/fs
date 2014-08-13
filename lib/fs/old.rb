@@ -6,29 +6,6 @@ module FS
       FileUtils.touch(files)
     end
 
-    # FileUtils#mkdir
-    def makedir(*dirs)
-      FileUtils.mkdir(dirs)
-    end
-
-    # FileUtils#mkdir_p
-    def makedirs(*dirs)
-      FileUtils.mkdir_p(dirs)
-    end
-
-    # FileUtils#rmdir
-    def removedir(*dirs)
-      dirs.each do |dir|
-        raise Errno::ENOTEMPTY unless empty?(dir)
-      end
-      FileUtils.rmdir(dirs)
-    end
-
-    # FileUtils#rm_r
-    def removedirs(*dirs)
-      FileUtils.rm_r(dirs)
-    end
-
     # Dir#glob
     def list(dir='.', pattern='*')
       glob(dir, pattern)
