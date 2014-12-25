@@ -33,6 +33,28 @@ using the good old standard library, but providing simple methods in a single pl
     FS.list('tmp/demo')
     ==> []
 
+## Commands
+
+### Directory
+
+change_dir
+change_dir &block
+working_dir
+
+make_dir
+make_dir!
+remove_dir
+remove_dir!
+
+### File
+
+touch
+touch!
+
+move
+
+
+
 ## Aliases
 
 Although verbose method names are good, there are some aliases for unix shell
@@ -62,6 +84,7 @@ Here is my mind …
 - remove! to force something
 - maybe makedir! to mkdir -p
 - maybe touch! to mkdir -p && touch
+
 - use Find#find in FS#find ;)
 - file type / ftype
 - list_dirs

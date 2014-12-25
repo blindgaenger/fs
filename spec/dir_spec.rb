@@ -13,17 +13,17 @@ describe FS::Dir do
     end
   end
 
-  describe '.current_dir' do
+  describe '.working_dir' do
     it 'returns the current dir' do
-      FS::Dir.current_dir.must_equal(TEST_DIR)
+      FS::Dir.working_dir.must_equal(TEST_DIR)
     end
 
     it 'works after dir was changed' do
-      here = FS::Dir.current_dir
+      here = FS::Dir.working_dir
       FileUtils.mkdir('foo')
       Dir.chdir('foo')
 
-      FS::Dir.current_dir.must_equal(File.join(here, 'foo'))
+      FS::Dir.working_dir.must_equal(File.join(here, 'foo'))
     end
   end
 
@@ -47,6 +47,24 @@ describe FS::Dir do
       end
 
       Dir.pwd.must_equal(here)
+    end
+  end
+
+  describe '.make_dir' do
+    context 'dir does not exist' do
+      it 'creates a dir'
+    end
+
+    context 'some parent dirs do already exist' do
+      it 'creates a dir'
+    end
+
+    context 'dir does already exist' do
+      it 'raises an error'
+    end
+
+    context 'dir contains a file in the path' do
+      it 'raises an error'
     end
   end
 

@@ -7,7 +7,7 @@ module FS
       # :rmdir   => :remove_dir,
       # :rm_r    => :remove_dirs,
       :cd      => :change_dir,
-      :pwd     => :current_dir,
+      :pwd     => :working_dir,
       :mv      => :move,
       :cp      => :copy,
       :rm      => :remove,

@@ -9,7 +9,7 @@ module FS
     end
 
     # Dir#pwd
-    def current_dir
+    def working_dir
       ::Dir.pwd
     end
 
